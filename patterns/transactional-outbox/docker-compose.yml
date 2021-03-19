@@ -1,0 +1,16 @@
+version: '3'
+services:
+  producer:
+    build: .
+    command: "npm run start:producer"
+    ports:
+      - "3000:80"
+    environment:
+      - PROC_TITLE=producer
+  reciever:
+    build: .
+    command: "npm run start:reciever"
+    ports:
+      - "3001:80"
+    environment:
+      - PROC_TITLE=reciever

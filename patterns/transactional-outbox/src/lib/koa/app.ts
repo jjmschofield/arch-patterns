@@ -5,7 +5,7 @@ import Router from "koa-router";
 import * as Boom from "@hapi/boom";
 
 import {setCorrelationId, setReqTime, errorHandler, logRequest} from './middleware';
-import {healthCtrl} from "./controllers/health/health";
+import {processCtrl} from "./controllers/process/process";
 
 export const createApp = (router: Router): Koa => {
   const app = new Koa();
@@ -18,7 +18,7 @@ export const createApp = (router: Router): Koa => {
 
   applyResponseHeaders(app);
 
-  router.get('/health', healthCtrl);
+  router.get('/process-info', processCtrl);
 
   app.use(router.routes());
 
