@@ -4,9 +4,12 @@ import Router from "koa-router";
 import log from '../lib/logger';
 import config from '../lib/config';
 import {createApp, startHttpServer} from "../lib/koa";
+import {sendSyncCtrl} from "./routes/sendSync";
 
 export const server = async () => {
   const router = new Router();
+
+  router.post('/send-sync', sendSyncCtrl);
 
   const app = createApp(router);
 

@@ -1,16 +1,20 @@
 version: '3'
 services:
-  producer:
+  producer-server:
     build: .
     command: "npm run start:producer"
     ports:
       - "3000:80"
+    depends_on:
+      - receiver-server
     environment:
-      - PROC_TITLE=producer
-  reciever:
+      - PROC_TITLE=producer-http-server
+      - RECEIVER_ENDPOINT=http://receiver-server/receive
+
+  receiver-server:
     build: .
-    command: "npm run start:reciever"
+    command: "npm run start:receiver"
     ports:
       - "3001:80"
     environment:
-      - PROC_TITLE=reciever
+      - PROC_TITLE=reciever-http-server

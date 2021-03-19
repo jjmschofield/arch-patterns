@@ -4,11 +4,14 @@ import Router from "koa-router";
 import log from '../lib/logger';
 import config from '../lib/config';
 import {createApp, startHttpServer} from "../lib/koa";
+import {receiveCtrl} from "./routes/receive";
 
 export const server = async () => {
   const router = new Router();
 
   const app = createApp(router);
+
+  router.post('/receive', receiveCtrl);
 
   startHttpServer(app, process.env.HTTP_PORT || '80');
 };
