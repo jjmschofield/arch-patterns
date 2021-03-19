@@ -26,6 +26,9 @@
     "koa-helmet": "^4.1.0",
     "koa-router": "^7.4.0",
     "needle": "^2.6.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.5.1",
     "source-map-support": "^0.5.12"
   },
   "devDependencies": {
@@ -40,6 +43,7 @@
     "@types/koa-router": "^7.0.40",
     "@types/needle": "^2.5.1",
     "@types/node": "^12.0.3",
+    "@types/sequelize": "^4.28.9",
     "nodemon": "^1.19.1",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",

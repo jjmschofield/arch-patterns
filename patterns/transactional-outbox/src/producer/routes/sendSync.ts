@@ -2,6 +2,7 @@ import {Context} from "koa";
 import {SendRequestBody} from "../../types";
 import needle from "needle";
 import log from "../../lib/logger";
+import correlator from "correlation-id";
 
 export const sendSyncCtrl = async (ctx: Context, next: Function) => {
   ctx.status = 200;
@@ -14,7 +15,10 @@ export const sendSyncCtrl = async (ctx: Context, next: Function) => {
   try {
     log.info('EVENT_SEND_START', 'sending event', event);
 
-    await needle('post', process.env.RECEIVER_ENDPOINT || 'not set', event);
+    await needle('post', process.env.RECEIVER_ENDPOINT || 'not set', event, {
+      headers: {"x-correlation-id": correlator.getId()},
+      response_timeout: 5000, // 5 seconds
+    });
 
     log.info('EVENT_SEND_SUCCESS', 'event was sent successfully', event);
 

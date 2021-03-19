@@ -19,7 +19,7 @@ export const setCorrelationId = (ctx: Context, next: Function): Promise<void> =>
 
 const correlatedNext = async (ctx: Context, next: Function, resolve: Function, reject: Function) => {
   try {
-    ctx.set('X-Correlation-Id', correlator.getId() || 'NOT_SET');
+    ctx.set('x-correlation-id', correlator.getId() || 'NOT_SET');
     await next();
     resolve();
   }

@@ -7,9 +7,21 @@ services:
       - "3000:80"
     depends_on:
       - receiver-server
+      - producer-db
     environment:
       - PROC_TITLE=producer-http-server
       - RECEIVER_ENDPOINT=http://receiver-server/receive
+      - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
+
+  producer-db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=producer_user
+      - POSTGRES_PASSWORD=producer_password
+      - POSTGRES_DB=producer_database
+
 
   receiver-server:
     build: .
