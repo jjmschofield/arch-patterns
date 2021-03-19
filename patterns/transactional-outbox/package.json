@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "shx rm -rf ./dist && tsc",
     "start": "docker-compose up --build",
     "prestart": "npm run build",
     "start:producer": "node dist/producer/server.js",
     "start:reciever": "node dist/reciever/server.js",
     "start:dev:producer": "nodemon -e ts --watch src --exec 'npx ts-node ./src/producer/server.ts'",
-    "build": "shx rm -rf ./dist && tsc",
+    "start:dev:reciever": "nodemon -e ts --watch src --exec 'npx ts-node ./src/reciever/server.ts'",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "",
