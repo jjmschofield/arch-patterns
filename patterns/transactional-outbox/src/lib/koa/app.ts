@@ -1,24 +1,34 @@
-import Koa, {Context} from 'koa';
-import Router from 'koa-router';
+import Koa from 'koa';
 import helmet from 'koa-helmet';
 import cors from 'koa-cors';
+import Router from "koa-router";
+import * as Boom from "@hapi/boom";
 
 import {setCorrelationId, setReqTime, errorHandler, logRequest} from './middleware';
-
 import {healthCtrl} from "./controllers/health/health";
 
-export const createApp = (): { app: Koa, router: Router } => {
+export const createApp = (router: Router): Koa => {
   const app = new Koa();
-  applyLoggingMiddleware(app);
-  applyErrorHandlers(app);
-  applySecurityMiddleware(app);
-  applyResponseHeaders(app);
 
-  const router = new Router();
+  applyLoggingMiddleware(app);
+
+  applyErrorHandlers(app);
+
+  applySecurityMiddleware(app);
+
+  applyResponseHeaders(app);
 
   router.get('/health', healthCtrl);
 
-  return { app, router };
+  app.use(router.routes());
+
+  app.use(router.allowedMethods({
+    throw: true,
+    methodNotAllowed: Boom.methodNotAllowed,
+    notImplemented: Boom.notImplemented,
+  }));
+
+  return app;
 };
 
 export const applyLoggingMiddleware = (app: Koa): Koa => {

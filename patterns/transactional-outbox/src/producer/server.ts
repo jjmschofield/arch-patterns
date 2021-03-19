@@ -1,19 +1,14 @@
 import 'source-map-support/register';
-import * as Boom from "@hapi/boom";
+import Router from "koa-router";
 
 import log from '../lib/logger';
 import config from '../lib/config';
 import {createApp, startHttpServer} from "../lib/koa";
 
 export const server = async () => {
-  const { app, router } = createApp();
+  const router = new Router();
 
-  app.use(router.routes());
-  app.use(router.allowedMethods({
-    throw: true,
-    methodNotAllowed: Boom.methodNotAllowed,
-    notImplemented: Boom.notImplemented,
-  }));
+  const app = createApp(router);
 
   startHttpServer(app, process.env.HTTP_PORT || '80');
 };

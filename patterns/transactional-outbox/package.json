@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "start:dev": "nodemon -e ts --watch src --exec 'npx ts-node ./src/server/server.ts'",
+    "start:dev": "nodemon -e ts --watch src --exec 'npx ts-node ./src/producer/server.ts'",
     "build": "shx rm -rf ./dist && tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
