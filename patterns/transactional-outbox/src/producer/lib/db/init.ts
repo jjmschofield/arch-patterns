@@ -1,5 +1,5 @@
 import {Sequelize} from "sequelize";
-import * as pendingMessage from "../models/pending-message";
+import * as pendingMessage from "../pending-message";
 
 let sequelize: Sequelize;
 

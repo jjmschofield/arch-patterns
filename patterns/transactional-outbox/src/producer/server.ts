@@ -4,7 +4,7 @@ import Router from "koa-router";
 import log from '../lib/logger';
 import config from '../lib/config';
 import {createApp, startHttpServer} from "../lib/koa";
-import {initDb, syncDb, getDb} from "./db";
+import {initDb, syncDb, getDb} from "./lib/db";
 import {sendCtrl, sendSyncCtrl} from "./routes";
 
 export const server = async () => {

@@ -1,7 +1,7 @@
 import config from "../lib/config";
 import log from "../lib/logger";
-import {getDb, initDb} from "./db";
-import {startSendingMessages} from "./models/pending-message";
+import {getDb, initDb} from "./lib/db";
+import {startSendingMessages} from "./lib/pending-message";
 
 export const start = async () => {
   return new Promise(async (resolve, reject) => {
@@ -12,8 +12,6 @@ export const start = async () => {
     }
   });
 };
-
-
 
 export const db = async () => {
   await initDb();

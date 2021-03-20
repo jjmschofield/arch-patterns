@@ -2,7 +2,7 @@ import {Context} from "koa";
 import {SendRequestBody} from "../../types";
 import needle from "needle";
 import log from "../../lib/logger";
-import {createPendingMessage} from "../models/pending-message";
+import {createPendingMessage} from "../lib/pending-message";
 import correlator from "correlation-id";
 
 export const sendCtrl = async (ctx: Context, next: Function) => {

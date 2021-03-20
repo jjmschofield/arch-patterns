@@ -37,9 +37,9 @@ class Logger implements ILogger {
   }
 }
 
-const assignDefaultProperties = (paylod: object) : object => {
+const assignDefaultProperties = (paylod: any) : object => {
   const defaults = {
-    correlation: correlator.getId(),
+    correlation: paylod.correlation || correlator.getId(),
   };
 
   return Object.assign({}, paylod, defaults);

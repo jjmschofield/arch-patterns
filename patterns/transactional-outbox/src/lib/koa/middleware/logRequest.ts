@@ -3,9 +3,9 @@ import log from '../../logger';
 
 export const logRequest = async (ctx: Context, next: Function): Promise<void> => {
   try {
-    logStart(ctx);
+    // logStart(ctx);
     await next();
-    logEnd(ctx);
+    // logEnd(ctx);
   }
   catch (error) {
     if(ctx.status >= 500) {
