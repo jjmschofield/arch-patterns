@@ -6,6 +6,7 @@ export class PendingMessageModel extends Model {
   public attempts: number | undefined;
   public lastAttempt: Date | undefined;
   public correlation: string | undefined;
+  public _id: string | undefined;
 }
 
 export const init = (sequelize: Sequelize) => {

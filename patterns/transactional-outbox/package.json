@@ -8,8 +8,10 @@
     "start": "docker-compose up --build",
     "prestart": "npm run build",
     "start:producer": "node dist/producer/server.js",
+    "start:relay": "node dist/producer/relay.js",
     "start:receiver": "node dist/receiver/server.js",
     "start:dev:producer": "nodemon -e ts --watch src --exec 'npx ts-node ./src/producer/server.ts'",
+    "start:dev:relay": "nodemon -e ts --watch src --exec 'npx ts-node ./src/receiver/relay.ts'",
     "start:dev:receiver": "nodemon -e ts --watch src --exec 'npx ts-node ./src/receiver/server.ts'",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },

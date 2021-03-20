@@ -9,7 +9,19 @@ services:
       - receiver-server
       - producer-db
     environment:
-      - PROC_TITLE=producer-http-server
+      - PROC_TITLE=producer-server
+      - RECEIVER_ENDPOINT=http://receiver-server/receive
+      - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
+
+  producer-relay:
+    build: .
+    command: "npm run start:relay"
+    depends_on:
+      - receiver-server
+      - producer-server
+      - producer-db
+    environment:
+      - PROC_TITLE=producer-relay
       - RECEIVER_ENDPOINT=http://receiver-server/receive
       - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
 
@@ -22,11 +34,10 @@ services:
       - POSTGRES_PASSWORD=producer_password
       - POSTGRES_DB=producer_database
 
-
   receiver-server:
     build: .
     command: "npm run start:receiver"
     ports:
       - "3001:80"
     environment:
-      - PROC_TITLE=reciever-http-server
+      - PROC_TITLE=reciever-server

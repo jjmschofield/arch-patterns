@@ -6,8 +6,6 @@ import {createPendingMessage} from "../models/pending-message";
 import correlator from "correlation-id";
 
 export const sendCtrl = async (ctx: Context, next: Function) => {
-  ctx.status = 200;
-
   const message: SendRequestBody = {
     id: ctx.request.body.id,
     msg: ctx.request.body.msg
