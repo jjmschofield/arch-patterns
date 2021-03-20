@@ -1,7 +1,8 @@
 import log from "../../../lib/logger";
 import needle from "needle";
+import {Message} from "../messages/types";
 
-export const sendMessage = async (message: { id: string, msg: string, correlation: string }) => {
+export const sendMessage = async (message: Message) => {
   try{
     log.info('MESSAGE_SEND_START', 'sending message', message);
 

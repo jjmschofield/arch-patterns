@@ -2,17 +2,18 @@ import {Context} from "koa";
 import {SendRequestBody} from "../../types";
 import needle from "needle";
 import log from "../../lib/logger";
-import {createPendingMessage} from "../lib/pending-message";
+import {createPendingMessage} from "../lib/messages";
 import correlator from "correlation-id";
 
 export const sendCtrl = async (ctx: Context, next: Function) => {
-  const message: SendRequestBody = {
+  const message = {
     id: ctx.request.body.id,
-    msg: ctx.request.body.msg
+    msg: ctx.request.body.msg,
+    correlation: correlator.getId() || 'NOT SET',
   }
 
   try {
-    await createPendingMessage({ ...message, correlation: correlator.getId()!});
+    await createPendingMessage(message);
 
     log.info('STORE_IN_OUTBOX_SUCCESS', 'storing a message in outbox to be sent by worker', message);
 

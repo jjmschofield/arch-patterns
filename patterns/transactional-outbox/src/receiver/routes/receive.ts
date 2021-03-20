@@ -10,7 +10,7 @@ export const receiveCtrl = async (ctx: Context, next: Function) => {
     msg: ctx.request.body.msg
   }
 
-  log.info('EVENT_RECEIVED', 'event received thank you', event);
+  log.info('MESSAGE_RECEIVED', 'message received thank you', event);
 
   ctx.status = 200;
   ctx.body = event;

@@ -1,10 +1,9 @@
 import {Op} from 'sequelize';
 import {PendingMessageModel} from "./model";
-import {Message} from "./types";
+import {MessageRecord} from "./types";
 import {getDb} from "../db";
 
-export const getNextMessageExclusively = async (retryDelayMs: number): Promise<Message | null> => {
-
+export const getNextMessageExclusively = async (retryDelayMs: number): Promise<MessageRecord | null> => {
   const t = await getDb().transaction();
 
   const message = await PendingMessageModel.findOne({
@@ -44,16 +43,10 @@ export const getNextMessageExclusively = async (retryDelayMs: number): Promise<M
 
   if (!message) return null;
 
-  return {
-    _id: message._id!,
-    id: message.id!,
-    msg: message.msg!,
-    correlation: message.correlation!,
-    attempts: message.attempts!,
-  };
+  return message.toPojo();
 };
 
-export const releaseLock = async (message: Message) => {
+export const releaseLock = async (message: MessageRecord) => {
   await PendingMessageModel.update(
     {lockedAt: null},
     {

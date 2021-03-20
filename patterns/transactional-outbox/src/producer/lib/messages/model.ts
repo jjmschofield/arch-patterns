@@ -1,13 +1,30 @@
 import {Sequelize, DataTypes, Model} from 'sequelize';
+import {MessageRecord} from "./types";
 
 export class PendingMessageModel extends Model {
+  public _id: string | undefined;
   public id: string | undefined;
   public msg: string | undefined;
   public attempts: number | undefined;
   public lastAttempt: Date | undefined;
   public lockedAt: Date | undefined;
+  public createdAt: Date | undefined;
+  public updatedAt: Date | undefined;
   public correlation: string | undefined;
-  public _id: string | undefined;
+
+  toPojo(): MessageRecord {
+    return {
+      _id: this._id!,
+      id: this.id!,
+      msg: this.msg!,
+      correlation: this.correlation!,
+      attempts: this.attempts!,
+      lastAttemptAt: this.lastAttempt!,
+      lockedAt: this.lockedAt!,
+      createdAt: this.createdAt!,
+      updatedAt: this.updatedAt!,
+    }
+  }
 }
 
 export const init = (sequelize: Sequelize) => {

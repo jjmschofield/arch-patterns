@@ -1,4 +1,4 @@
-import * as pendingMessage from "../pending-message";
+import * as pendingMessage from "../messages";
 
 export const syncDb = async () => {
  await pendingMessage.sync();

@@ -1,12 +1,13 @@
 import config from "../lib/config";
 import log from "../lib/logger";
 import {getDb, initDb} from "./lib/db";
-import {startSendingMessages} from "./lib/pending-message";
+import {startSendingMessages} from "./lib/messages";
+import {sendMessage} from "./lib/clients/receiver";
 
 export const start = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      startSendingMessages();
+      startSendingMessages(sendMessage);
     } catch (error) {
       reject(error);
     }

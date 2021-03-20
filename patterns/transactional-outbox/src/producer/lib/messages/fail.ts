@@ -1,7 +1,7 @@
-import {Message} from "./types";
+import {MessageRecord} from "./types";
 import {PendingMessageModel} from "./model";
 
-export const recordFailure = async (message: Message) => {
+export const recordFailure = async (message: MessageRecord) => {
   const record = await PendingMessageModel.findOne({
     where: {_id: message._id}
   });
