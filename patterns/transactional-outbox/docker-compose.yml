@@ -16,6 +16,7 @@ services:
   producer-relay:
     build: .
     command: "npm run start:relay"
+    scale: 2
     depends_on:
       - receiver-server
       - producer-server

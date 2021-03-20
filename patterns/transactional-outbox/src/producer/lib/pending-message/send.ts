@@ -1,4 +1,4 @@
-import {getNextMessage} from "./get";
+import {getNextMessageExclusively, releaseLock} from "./get";
 import {sendMessage} from "../clients/receiver";
 import {recordFailure} from "./fail";
 import {destroy} from "./destroy";
@@ -10,7 +10,7 @@ export const startSendingMessages = () => {
 
   const config = {
     delayMs: parseInt(process.env.BATCH_DELAY_MS || '10'),
-    retryDelayMs: parseInt(process.env.BATCH_DELAY_MS || '5000'),
+    retryDelayMs: parseInt(process.env.BATCH_DELAY_MS || '30000'),
     maxAttempts: parseInt(process.env.BATCH_DELAY_MS || '3')
   }
 
@@ -18,7 +18,7 @@ export const startSendingMessages = () => {
 }
 
 export const sendNextMessage = async (delayMs: number, retryDelayMs: number, maxAttempts: number) => {
-  const message = await getNextMessage(retryDelayMs);
+  const message = await getNextMessageExclusively(retryDelayMs);
 
   if (message) {
     log.info('RELAY_QUEUE_FOUND_MESSAGE', 'processing pending message', message);
@@ -39,13 +39,14 @@ const attemptToSendMessage = async (message: Message, maxAttempts: number) => {
   } catch (error) {
     log.info('MESSAGE_DELIVERY_FAILED', 'message could not be delivered');
 
-    if (message.attempts! >= maxAttempts) {
+    if (message.attempts! + 1 >= maxAttempts) {
       await destroy(message._id!);
       log.info('MESSAGE_EXCEEDED_DELIVERY_ATTEMPTS', 'message cannot be delivered and has been deleted from queue');
 
     } else{
       log.info('MESSAGE_WILL_BE_RETRIED', 'message queued for retry');
       await recordFailure(message);
+      await releaseLock(message);
     }
   }
 }

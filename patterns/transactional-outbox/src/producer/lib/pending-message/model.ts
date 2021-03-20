@@ -5,6 +5,7 @@ export class PendingMessageModel extends Model {
   public msg: string | undefined;
   public attempts: number | undefined;
   public lastAttempt: Date | undefined;
+  public lockedAt: Date | undefined;
   public correlation: string | undefined;
   public _id: string | undefined;
 }
@@ -31,6 +32,10 @@ export const init = (sequelize: Sequelize) => {
       defaultValue: 0,
     },
     lastAttempt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    lockedAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
