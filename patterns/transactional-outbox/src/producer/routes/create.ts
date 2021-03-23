@@ -8,7 +8,7 @@ export const createCtrl = async (ctx: Context, next: Function) => {
 
     ctx.status = 201;
   } catch (error) {
-    log.error('CREATE_HERO_FAIL', 'failed to store message in outbox', error);
+    log.error('CREATE_HERO_FAIL', 'failed to create hero', error);
     throw error;
   }
 };
