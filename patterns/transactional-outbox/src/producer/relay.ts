@@ -7,7 +7,14 @@ import {sendMessage} from "./lib/clients/receiver";
 export const start = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      startSendingMessages(sendMessage);
+
+      const conf = {
+        pollIntervalMs: parseInt(process.env.POLL_INTERVAL_MS || '10'),
+        retryDelayMs: parseInt(process.env.RETRY_DELAY_MS || '30000'),
+        maxAttempts: parseInt(process.env.MAX_ATTEMPTS || '3')
+      };
+
+      startSendingMessages(sendMessage, conf);
     } catch (error) {
       reject(error);
     }
@@ -16,7 +23,7 @@ export const start = async () => {
 
 export const db = async () => {
   await initDb();
-}
+};
 
 (async () => {
   try {

@@ -6,20 +6,20 @@ import {Message, MessageRecord} from "./types";
 
 type MessageTransport = (message: Message) => Promise<void>;
 
-export const startSendingMessages = (transport: MessageTransport) => {
-  log.info('RELAY_QUEUE_POLL_START', 'starting to process backlog of messages');
-
-  const config = {
-    delayMs: parseInt(process.env.BATCH_DELAY_MS || '10'),
-    retryDelayMs: parseInt(process.env.BATCH_DELAY_MS || '30000'),
-    maxAttempts: parseInt(process.env.BATCH_DELAY_MS || '3')
-  }
-
-  sendNextMessage(transport, config.delayMs, config.retryDelayMs, config.maxAttempts);
+interface Config {
+  pollIntervalMs: number,
+  retryDelayMs: number,
+  maxAttempts: number,
 }
 
-export const sendNextMessage = async (transport: MessageTransport, delayMs: number, retryDelayMs: number, maxAttempts: number) => {
-  const message = await getNextMessageExclusively(retryDelayMs);
+export const startSendingMessages = (transport: MessageTransport, config: Config) => {
+  log.info('RELAY_QUEUE_POLL_START', 'starting to process backlog of messages');
+
+  sendNextMessage(transport, config);
+};
+
+export const sendNextMessage = async (transport: MessageTransport, config: Config) => {
+  const message = await getNextMessageExclusively(config.retryDelayMs);
 
   if (message) {
     log.info(
@@ -28,13 +28,13 @@ export const sendNextMessage = async (transport: MessageTransport, delayMs: numb
       {id: message.id, correlation: message.correlation}
     );
 
-    await attemptToSendMessage(transport, message, maxAttempts);
+    await trySendMessage(transport, message, config.maxAttempts);
   }
 
-  setTimeout(() => sendNextMessage(transport, delayMs, retryDelayMs, maxAttempts), delayMs);
-}
+  setTimeout(() => sendNextMessage(transport, config), config.pollIntervalMs);
+};
 
-const attemptToSendMessage = async (transport: MessageTransport, message: MessageRecord, maxAttempts: number) => {
+const trySendMessage = async (transport: MessageTransport, message: MessageRecord, maxAttempts: number) => {
   try {
     await transport(message);
 
@@ -46,12 +46,11 @@ const attemptToSendMessage = async (transport: MessageTransport, message: Messag
 
     if (message.attempts! + 1 >= maxAttempts) {
       await destroy(message);
-      log.info('MESSAGE_EXCEEDED_DELIVERY_ATTEMPTS', 'message cannot be delivered and has been deleted from queue');
-
+      log.info('MESSAGE_EXCEEDED_DELIVERY_ATTEMPTS', 'message cannot be delivered and has been deleted from queue', {id: message.id, correlation: message.correlation});
     } else {
-      log.info('MESSAGE_WILL_BE_RETRIED', 'message queued for retry');
+      log.info('MESSAGE_WILL_BE_RETRIED', 'message queued for retry', {id: message.id, correlation: message.correlation});
       await recordFailure(message);
       await releaseLock(message);
     }
   }
-}
+};

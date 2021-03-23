@@ -47,7 +47,7 @@ const getNextMessage = async (retryDelayMs: number, transaction: Transaction): P
     lock: true,
     skipLocked: true,
   });
-}
+};
 
 const lock = async (message: MessageRecord, transaction: Transaction): Promise<void> => {
   await MessageModel.update(
@@ -70,4 +70,4 @@ export const releaseLock = async (message: MessageRecord): Promise<void> => {
       }
     }
   );
-}
+};

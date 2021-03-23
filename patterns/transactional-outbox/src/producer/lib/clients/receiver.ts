@@ -11,7 +11,7 @@ export const sendMessage = async (message: Message) => {
       response_timeout: 5000, // 5 second timeout
     });
 
-    log.info('MESSAGE_SEND_SUCCESS', 'wessage was sent successfully', {id: message.id, correlation: message.correlation});
+    log.info('MESSAGE_SEND_SUCCESS', 'message was sent successfully', {id: message.id, correlation: message.correlation});
   } catch (error) {
     log.error('MESSAGE_SEND_FAIL', 'message was not sent', {id: message.id, correlation: message.correlation});
     throw error;

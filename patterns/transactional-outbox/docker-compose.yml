@@ -24,6 +24,9 @@ services:
     environment:
       - PROC_TITLE=producer-relay
       - RECEIVER_ENDPOINT=http://receiver-server/receive
+      - POLL_INTERVAL_MS=10
+      - RETRY_DELAY_MS=30000
+      - MAX_ATTEMPTS=3
       - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
 
   producer-db:
