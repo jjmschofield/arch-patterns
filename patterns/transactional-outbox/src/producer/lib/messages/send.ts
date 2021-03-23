@@ -22,7 +22,11 @@ export const sendNextMessage = async (transport: MessageTransport, delayMs: numb
   const message = await getNextMessageExclusively(retryDelayMs);
 
   if (message) {
-    log.info('RELAY_QUEUE_FOUND_MESSAGE', 'processing pending message', message);
+    log.info(
+      'RELAY_QUEUE_FOUND_MESSAGE',
+      'processing pending message',
+      {id: message.id, correlation: message.correlation}
+    );
 
     await attemptToSendMessage(transport, message, maxAttempts);
   }
@@ -32,13 +36,13 @@ export const sendNextMessage = async (transport: MessageTransport, delayMs: numb
 
 const attemptToSendMessage = async (transport: MessageTransport, message: MessageRecord, maxAttempts: number) => {
   try {
-    await transport({id: message.id, msg: message.msg, correlation: message.correlation});
+    await transport(message);
 
     await destroy(message);
 
-    log.info('MESSAGE_PROCESSED', 'message deleted from queue');
+    log.info('MESSAGE_PROCESSED', 'message deleted from queue', {id: message.id, correlation: message.correlation});
   } catch (error) {
-    log.info('MESSAGE_DELIVERY_FAILED', 'message could not be delivered');
+    log.info('MESSAGE_DELIVERY_FAILED', 'message could not be delivered', {id: message.id, correlation: message.correlation});
 
     if (message.attempts! + 1 >= maxAttempts) {
       await destroy(message);

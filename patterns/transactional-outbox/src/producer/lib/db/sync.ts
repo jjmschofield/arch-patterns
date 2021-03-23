@@ -1,5 +1,7 @@
-import * as pendingMessage from "../messages";
+import * as messages from "../messages";
+import * as superheros from "../superhero";
 
 export const syncDb = async () => {
- await pendingMessage.sync();
+  await superheros.sync();
+  await messages.sync();
 };

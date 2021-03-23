@@ -1,14 +1,35 @@
-import {Op} from 'sequelize';
-import {PendingMessageModel} from "./model";
+import {Op, Transaction} from 'sequelize';
+import {MessageModel} from "./model";
 import {MessageRecord} from "./types";
 import {getDb} from "../db";
+import log from "../../../lib/logger";
 
 export const getNextMessageExclusively = async (retryDelayMs: number): Promise<MessageRecord | null> => {
-  const t = await getDb().transaction();
+  const transaction = await getDb().transaction();
 
-  const message = await PendingMessageModel.findOne({
+  try {
+    const message = await getNextMessage(retryDelayMs, transaction);
+
+    if (message) {
+      await lock(message.toPojo(), transaction);
+    }
+
+    await transaction.commit();
+
+    if (!message) return null;
+
+    return message.toPojo();
+  } catch (error) {
+    await transaction.rollback();
+    log.error('GET_NEXT_MESSAGE_EXCLUSIVELY_ERROR', 'failed to get and lock next message');
+    throw error;
+  }
+};
+
+const getNextMessage = async (retryDelayMs: number, transaction: Transaction): Promise<MessageModel | null> => {
+  return MessageModel.findOne({
     where: {
-      lastAttempt: {
+      lastAttemptAt: {
         [Op.or]: {
           [Op.eq]: null,
           [Op.lt]: new Date(Date.now() - retryDelayMs)
@@ -22,36 +43,30 @@ export const getNextMessageExclusively = async (retryDelayMs: number): Promise<M
       }
     },
     order: [['createdAt', 'ASC']],
-    transaction: t,
+    transaction,
     lock: true,
     skipLocked: true,
   });
+}
 
-  if (message) {
-    await PendingMessageModel.update(
-      {lockedAt: new Date()},
-      {
-        where: {
-          _id: message!._id,
-        },
-        transaction: t,
-      }
-    );
-  }
-
-  await t.commit();
-
-  if (!message) return null;
-
-  return message.toPojo();
+const lock = async (message: MessageRecord, transaction: Transaction): Promise<void> => {
+  await MessageModel.update(
+    {lockedAt: new Date()},
+    {
+      where: {
+        id: message!.id,
+      },
+      transaction: transaction,
+    }
+  );
 };
 
-export const releaseLock = async (message: MessageRecord) => {
-  await PendingMessageModel.update(
+export const releaseLock = async (message: MessageRecord): Promise<void> => {
+  await MessageModel.update(
     {lockedAt: null},
     {
       where: {
-        _id: message!._id,
+        id: message!.id,
       }
     }
   );

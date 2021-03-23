@@ -1,12 +1,12 @@
 import {Sequelize, DataTypes, Model} from 'sequelize';
 import {MessageRecord} from "./types";
 
-export class PendingMessageModel extends Model {
-  public _id: string | undefined;
+export class MessageModel extends Model {
   public id: string | undefined;
   public msg: string | undefined;
+  public payload: object | undefined;
   public attempts: number | undefined;
-  public lastAttempt: Date | undefined;
+  public lastAttemptAt: Date | undefined;
   public lockedAt: Date | undefined;
   public createdAt: Date | undefined;
   public updatedAt: Date | undefined;
@@ -14,12 +14,12 @@ export class PendingMessageModel extends Model {
 
   toPojo(): MessageRecord {
     return {
-      _id: this._id!,
       id: this.id!,
       msg: this.msg!,
+      payload: this.payload!,
       correlation: this.correlation!,
       attempts: this.attempts!,
-      lastAttemptAt: this.lastAttempt!,
+      lastAttemptAt: this.lastAttemptAt!,
       lockedAt: this.lockedAt!,
       createdAt: this.createdAt!,
       updatedAt: this.updatedAt!,
@@ -28,27 +28,27 @@ export class PendingMessageModel extends Model {
 }
 
 export const init = (sequelize: Sequelize) => {
-  PendingMessageModel.init({
-    _id: {
-      type: DataTypes.BIGINT,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
-    },
+  MessageModel.init({
     id: {
       type: DataTypes.STRING,
-      allowNull: false
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
     msg: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    payload: {
+      type: DataTypes.JSONB,
+      allowNull: true
     },
     attempts: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
-    lastAttempt: {
+    lastAttemptAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -63,11 +63,11 @@ export const init = (sequelize: Sequelize) => {
   }, {
     sequelize,
     timestamps: true,
-    modelName: 'PendingMessage'
+    modelName: 'Message'
   });
 }
 
 export const sync = async () => {
-  await PendingMessageModel.sync({alter: true})
+  await MessageModel.sync({ force: true }) // !!! Will drop existing table !!!
 }
 

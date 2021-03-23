@@ -1,17 +1,19 @@
 import {Context} from "koa";
-import {SendRequestBody} from "../../types";
 import log from '../../lib/logger'
+import {saveMessage} from "../messages";
 
 export const receiveCtrl = async (ctx: Context, next: Function) => {
-  ctx.status = 200;
-
-  const event : SendRequestBody = {
+  const message = {
     id: ctx.request.body.id,
-    msg: ctx.request.body.msg
+    msg: ctx.request.body.msg,
+    payload: ctx.request.body.payload,
+    correlation: ctx.request.body.correlation,
   }
 
-  log.info('MESSAGE_RECEIVED', 'message received thank you', event);
+  saveMessage(message);
+
+  log.info('MESSAGE_RECEIVED', 'message received thank you', {id: message.id, correlation: message.correlation});
 
   ctx.status = 200;
-  ctx.body = event;
+  ctx.body = message;
 };

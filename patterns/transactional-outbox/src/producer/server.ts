@@ -5,14 +5,13 @@ import log from '../lib/logger';
 import config from '../lib/config';
 import {createApp, startHttpServer} from "../lib/koa";
 import {initDb, syncDb, getDb} from "./lib/db";
-import {sendCtrl, sendSyncCtrl} from "./routes";
+import {createCtrl, createSyncCtrl} from "./routes";
 
 export const server = async () => {
   const router = new Router();
 
-  router.post('/send', sendCtrl);
-
-  router.post('/send-sync', sendSyncCtrl);
+  router.post('/hero/create', createCtrl);
+  router.post('/hero/create-sync', createSyncCtrl);
 
   const app = createApp(router);
 

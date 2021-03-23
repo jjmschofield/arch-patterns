@@ -1,5 +1,6 @@
 import {Sequelize} from "sequelize";
-import * as pendingMessage from "../messages";
+import * as superheros from "../superhero";
+import * as messages from "../messages";
 
 let sequelize: Sequelize;
 
@@ -12,7 +13,8 @@ export const initDb = async () => {
 
   await sequelize.authenticate(); // just tests that the connection works
 
-  pendingMessage.init(sequelize);
+  messages.init(sequelize);
+  superheros.init(sequelize);
 };
 
 export const getDb = (): Sequelize => {

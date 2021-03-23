@@ -1,2 +1,2 @@
-export {sendCtrl} from './send';
-export {sendSyncCtrl} from './sendSync'
+export {createCtrl} from './create';
+export {createSyncCtrl} from './create-sync';

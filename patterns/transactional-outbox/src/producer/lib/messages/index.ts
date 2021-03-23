@@ -1,4 +1,4 @@
-export {createPendingMessage} from './create';
+export {createMessage} from './create';
 export {getNextMessageExclusively, releaseLock} from './get';
 export {recordFailure} from './fail';
 export {destroy} from './destroy';
