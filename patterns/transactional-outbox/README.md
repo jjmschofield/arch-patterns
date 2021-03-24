@@ -9,7 +9,7 @@ When a record is inserted a message is written to an outbox table at the same ti
 
 A relay process sends messages in the outbox table and deletes them when the message is sent successfully.
 
-This means that a record cannot not be added without a corresponding message being queued to be sent - ensuring that service crashes or temporary issues whilst talking with the DB don't risk the loss of important messages.  
+This means that a record cannot not be added without a corresponding message being queued - ensuring that service crashes or temporary DB issues don't risk the loss of important messages and resulting, state sync bugs.  
 
 ![Transactional Outbox](./docs/TransactionalOutbox.png)
 
@@ -22,7 +22,7 @@ Example: An order has been placed. It needs to be recorded and we need a guarant
 ### Considerations
 Delivery guarantee is "at least once", as such, consumers of messages should handle the same message being delivered multiple times.
  
-This is because the record might not get removed from the outbox after the message is sent (the sending of a message and removal of the message from the db is not atomic). This will results in a duplicate delivery. 
+This is because the record might not get removed from the outbox after the message is sent (the sending of a message and removal of the message from the db is not atomic). This will result in a duplicate delivery. 
 
 When scaling relays horizontally, a locking system needs to be used to prevent sending the same message many times. 
 
