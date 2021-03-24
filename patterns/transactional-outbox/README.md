@@ -142,7 +142,7 @@ You'll find the connection details you require in [docker-compose.yml](docker-co
 
 Checkout the `Messages`table for messages sat in the outbox.
 
-### Lets Cause Some Chaos
+### Let's Cause Some Chaos
 
 * TODO - a tool to send a steady stream of requests to the producer for both sync and using the outbox
 * TODO - make missing / duplicate messages on the receiver observable
