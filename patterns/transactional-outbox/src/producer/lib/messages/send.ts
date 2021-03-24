@@ -1,8 +1,8 @@
 import {getNextMessageExclusively, releaseLock} from "./get";
-import {recordFailure} from "./fail";
 import {destroy} from "./destroy";
 import log from "../../../lib/logger";
 import {Message, MessageRecord} from "./types";
+import { MessageModel } from "./model";
 
 type MessageTransport = (message: Message) => Promise<void>;
 
@@ -18,7 +18,7 @@ export const startSendingMessages = (transport: MessageTransport, config: Config
   sendNextMessage(transport, config);
 };
 
-export const sendNextMessage = async (transport: MessageTransport, config: Config) => {
+const sendNextMessage = async (transport: MessageTransport, config: Config) => {
   const message = await getNextMessageExclusively(config.retryDelayMs);
 
   if (message) {
@@ -43,14 +43,30 @@ const trySendMessage = async (transport: MessageTransport, message: MessageRecor
     log.info('MESSAGE_PROCESSED', 'message deleted from queue', {id: message.id, correlation: message.correlation});
   } catch (error) {
     log.info('MESSAGE_DELIVERY_FAILED', 'message could not be delivered', {id: message.id, correlation: message.correlation});
-
-    if (message.attempts! + 1 >= maxAttempts) {
-      await destroy(message);
-      log.info('MESSAGE_EXCEEDED_DELIVERY_ATTEMPTS', 'message cannot be delivered and has been deleted from queue', {id: message.id, correlation: message.correlation});
-    } else {
-      log.info('MESSAGE_WILL_BE_RETRIED', 'message queued for retry', {id: message.id, correlation: message.correlation});
-      await recordFailure(message);
-      await releaseLock(message);
-    }
+    await handleFailure(error, maxAttempts);
   }
+};
+
+const handleFailure = async (message: MessageRecord, maxAttempts: number) =>{
+  if (message.attempts! + 1 >= maxAttempts) {
+    await destroy(message);
+    log.info('MESSAGE_EXCEEDED_DELIVERY_ATTEMPTS', 'message cannot be delivered and has been deleted from queue', {id: message.id, correlation: message.correlation});
+  } else {
+    log.info('MESSAGE_WILL_BE_RETRIED', 'message queued for retry', {id: message.id, correlation: message.correlation});
+    await recordAttempt(message);
+    await releaseLock(message);
+  }
+};
+
+const recordAttempt = async (message: MessageRecord) => {
+  const record = await MessageModel.findOne({
+    where: {id: message.id}
+  });
+
+  if(!record) throw new Error('pending message not found');
+
+  await record.update({
+    attempts: record.attempts! + 1,
+    lastAttemptAt: new Date()
+  });
 };
