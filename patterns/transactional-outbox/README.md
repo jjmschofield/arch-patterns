@@ -2,7 +2,9 @@
 
 Chris Richardson - [Microservices.io](https://microservices.io/patterns/data/transactional-outbox.html)
 
-## About
+***
+
+## The Pattern
 
 ### TLDR;
 When a record is inserted a message is written to an outbox table at the same time in a local transaction.  
