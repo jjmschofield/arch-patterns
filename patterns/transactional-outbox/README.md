@@ -20,7 +20,7 @@ Example: An order has been placed. It needs to be recorded and we need a guarant
 
 
 ### Considerations
-Delivery guarantee is "at least once", As such, consumers of messages should handle the same message being delivered multiple times.
+Delivery guarantee is "at least once", as such, consumers of messages should handle the same message being delivered multiple times.
  
 This is because the record might not get removed from the outbox after the message is sent (the sending of a message and removal of the message from the db is not atomic). This will results in a duplicate delivery. 
 
