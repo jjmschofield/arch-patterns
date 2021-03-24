@@ -57,6 +57,36 @@ All config is done through the environment variables exposed in the [docker-comp
 ```
 Creates a hero called batman using the outbox (observe console output).
 
+```shell script
+producer-relay_1   | [INFO][RELAY_QUEUE_POLL_START] starting to process backlog of messages { correlation: undefined }
+producer-server_1  | [INFO][HERO_CREATED] created a new hero and placed message in outbox {
+producer-server_1  |   id: 'dbe2b14e-a667-446d-81d1-2fe497c3aa5d',
+producer-server_1  |   msgId: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+producer-server_1  |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+producer-server_1  | }
+producer-relay_1   | [INFO][RELAY_QUEUE_FOUND_MESSAGE] processing pending message {
+producer-relay_1   |   id: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+producer-relay_1   |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+producer-relay_1   | }
+producer-relay_1   | [INFO][MESSAGE_SEND_START] sending message {
+producer-relay_1   |   id: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+producer-relay_1   |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+producer-relay_1   | }
+receiver-server_1  | [INFO][MESSAGE_RECEIVED] message received thank you {
+receiver-server_1  |   id: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+receiver-server_1  |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+receiver-server_1  | }
+producer-relay_1   | [INFO][MESSAGE_SEND_SUCCESS] message was sent successfully {
+producer-relay_1   |   id: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+producer-relay_1   |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+producer-relay_1   | }
+producer-relay_1   | [INFO][MESSAGE_PROCESSED] message deleted from queue {
+producer-relay_1   |   id: 'e0ffb12f-f1a9-46bf-ab9b-d4f651784539',
+producer-relay_1   |   correlation: 'e5c51cd2-6f10-4b91-9c47-777ffe169144'
+producer-relay_1   | }
+```
+
+
 **GET: http://localhost:3001/messages**
 
 Gets all messages sent to the receiver returned in the order they were received.
