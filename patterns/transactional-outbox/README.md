@@ -134,11 +134,13 @@ What should happen to messages that can't be delivered? Is it ok for them to van
 
 ***
 
-## Exploring it
+## Exploring
 ### Connecting to the DB
 Being able to look inside the producers database would be good - PGadmin4, Postico and Datagrip are all noteworthy tools. 
 
 You'll find the connection details you require in [docker-compose.yml](docker-compose.yml).
+
+Checkout the `Messages`table for messages sat in the outbox.
 
 ### Lets Cause Some Chaos
 
