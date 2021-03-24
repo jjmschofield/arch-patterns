@@ -26,11 +26,12 @@ This is because the record might not get removed from the outbox after the messa
 
 When scaling relays horizontally, a locking system needs to be used to prevent sending the same message many times. 
 
+***
 
 ## This Implementation
 ![Transactional Outbox Implementation](./docs/Implementation.jpg)
 
-### Running it
+## Running
 ```shell script
 $ npm i
 $ npm run start
@@ -43,10 +44,11 @@ This launches the docker containers as described in the [docker-compose.yml](doc
 * Producer DB 
 
 
-### Configuring it
+## Configuring
 All config is done through the environment variables exposed in the [docker-compose.yml](docker-compose.yml) 
 
-### Calling it
+
+## Calling
 
 **POST: http://localhost:3000/hero/create**
 
@@ -66,20 +68,23 @@ Gets all messages sent to the receiver returned in the order they were received.
 ```
 Creates a hero called batman and directly calls the receiver without the outbox.
 
-### Understanding it
+***
+
+## Understanding
 Most of the code in this repo is quite boring and serves to make an observable play-pen. 
 
 Let's take a look at the actually interesting bits.
 
-#### The Transaction 
+### The Transaction 
 
 Triggered as a result of an API call, [createSuperHero](src/producer/lib/superhero/create.ts) is the place to dig in and observe how the transaction works to ensure an outbound message is queued.
 
-#### The Relay 
+### The Relay 
 
 The entry point to polling process is [startSendingMessages](src/producer/lib/messages/send.ts). 
 
-#### Scaling
+
+### Scaling
 
 The relay is setup to support horizontal scaling - eg running many relay instances. In fact you can control this with the `scale` value inside the [docker-compose.yml](docker-compose.yml). 
 
@@ -89,7 +94,9 @@ With multiple relays running, it is highly likely that (at least) two relays wil
 
 To prevent this the implementation uses `getNextMessageExclusively` [to temporarily lock messages](src/producer/lib/messages/get.ts) when the relay picks them up to try and send them.
 
-#### Reliability
+This implementation does not ensure message order - favouring simplified horizontal scaling. 
+
+### Reliability
 
 As ever, predicting and handling non-happy scenarios is where the details lie. Check out [handleFailures](src/producer/lib/messages/send.ts).
 
@@ -107,7 +114,7 @@ In this implementation a retry mechanism is built in to the process, specificall
 
 Delays (and exponential back offs, not implemented) can be very useful to prevent bombarding failed or failing services.
 
-#### Messages
+### Messages
 
 As this pattern aims to ensure "at least once delivery", messages **must** have an identifier so that the consumer can ignore duplicate messages.
 
@@ -117,7 +124,7 @@ Correlation ID's are very useful in debugging issues. In this example our messag
 
 Small messages are greatly preferable as they are cheaper to store, faster to transmit, and more transports are available to carry them. When designing a message payload consider what data is required for notification - and what data can alternatively be retrieved later if the consumer requires it.
 
-#### Undeliverable Messages
+### Undeliverable Messages
 
 In this implementation a message is given a certain number of attempts before it is assumed undeliverable and deleted from the queue silently. 
 
@@ -126,13 +133,13 @@ This is brutally simple and prevents the process from getting or gummed up by ba
 What should happen to messages that can't be delivered? Is it ok for them to vanish? The answer is normally *no* and choosing to not handle them can have significant impacts on end users.  
 
 
-### Exploring it
-#### Connecting to the DB
+## Exploring it
+### Connecting to the DB
 Being able to look inside the producers database would be good - PGadmin4, Postico and Datagrip are all noteworthy tools. 
 
 You'll find the connection details you require in [docker-compose.yml](docker-compose.yml).
 
-#### Lets Cause Some Chaos
+### Lets Cause Some Chaos
 
 * TODO - a tool to send a steady stream of requests to the producer for both sync and using the outbox
 * TODO - make missing / duplicate messages on the receiver observable
@@ -143,5 +150,4 @@ You'll find the connection details you require in [docker-compose.yml](docker-co
 * SCENARIO 5 - receiver is rejecting requests due to client error
 * SCENARIO 7 - relay fails and stops processing messages
 
-## Notes
-This implementation does not ensure message order - favouring through put and simplified horizontal scaling. 
+
