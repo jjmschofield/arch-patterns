@@ -73,7 +73,7 @@ Let's take a look at the actually interesting bits.
 
 #### The Transaction 
 
-Triggered as a result of an API call, [createSuperHero](src/producer/lib/superhero/create.ts) is the place to dig in.
+Triggered as a result of an API call, [createSuperHero](src/producer/lib/superhero/create.ts) is the place to dig in and observe how the transaction works to ensure an outbound message is queued.
 
 #### The Relay 
 
