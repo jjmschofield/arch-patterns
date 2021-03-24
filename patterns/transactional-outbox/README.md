@@ -132,6 +132,7 @@ This is brutally simple and prevents the process from getting or gummed up by ba
 
 What should happen to messages that can't be delivered? Is it ok for them to vanish? The answer is normally *no* and choosing to not handle them can have significant impacts on end users.  
 
+***
 
 ## Exploring it
 ### Connecting to the DB
