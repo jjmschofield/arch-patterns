@@ -8,4 +8,5 @@ It's intended to be education, both for the author and for anyone who stumbles a
 
 ## Patterms
 [Transactional Outbox](/transactional-outbox) 
+
 Want to make sure that you have an atomic event accompanying your record change? This might be for you
