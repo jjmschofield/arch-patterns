@@ -1,0 +1,47 @@
+version: '3'
+services:
+  producer-server:
+    build: .
+    command: "npm run start:producer"
+    ports:
+      - "3000:80"
+    depends_on:
+      - receiver-server
+      - producer-db
+    environment:
+      - PROC_TITLE=producer-server
+      - RECEIVER_ENDPOINT=http://receiver-server/receive
+      - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
+
+  producer-relay:
+    build: .
+    command: "npm run start:relay"
+    # scale: 10
+    depends_on:
+      - receiver-server
+      - producer-server
+      - producer-db
+    environment:
+      - PROC_TITLE=producer-relay
+      - RECEIVER_ENDPOINT=http://receiver-server/receive
+      - POLL_INTERVAL_MS=10
+      - RETRY_DELAY_MS=30000
+      - MAX_ATTEMPTS=3
+      - DB_CONNECTION_STRING=postgres://producer_user:producer_password@producer-db:5432/producer_database
+
+  producer-db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=producer_user
+      - POSTGRES_PASSWORD=producer_password
+      - POSTGRES_DB=producer_database
+
+  receiver-server:
+    build: .
+    command: "npm run start:receiver"
+    ports:
+      - "3001:80"
+    environment:
+      - PROC_TITLE=reciever-server
