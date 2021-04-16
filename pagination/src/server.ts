@@ -7,11 +7,14 @@ import log from '@common/logger';
 import config from '@common/config';
 import { createApp, startHttpServer } from '@common/koa';
 import { initDb, syncDb, getDb } from './lib/db';
+import {listPeopleCtrl} from "./routes";
 
 export const server = async () => {
   const router = new Router();
 
   const app = createApp(router);
+
+  router.get('/people', listPeopleCtrl);
 
   startHttpServer(app, process.env.HTTP_PORT || '80');
 };

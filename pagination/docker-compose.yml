@@ -2,13 +2,14 @@ version: '3'
 services:
   webserver:
     build: .
-    command: "npm run start:dist"
+    command: "npm run start:webserver"
     ports:
       - "3000:80"
     depends_on:
       - db
     environment:
       - PROC_TITLE=webserver
+      - SEED_COUNT=20000
       - DB_CONNECTION_STRING=postgres://db_user:db_password@db:5432/webserver_database
 
   db:

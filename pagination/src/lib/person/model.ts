@@ -1,6 +1,8 @@
-import { name } from 'faker';
-import { Sequelize, DataTypes, Model } from 'sequelize';
-import { PersonRecord } from './types';
+import {name} from 'faker';
+import {Sequelize, DataTypes, Model} from 'sequelize';
+import log from '@common/logger';
+import {PersonRecord} from './types';
+
 
 export class PersonModel extends Model {
   public id: string | undefined;
@@ -38,17 +40,26 @@ export const init = (sequelize: Sequelize) => {
 };
 
 export const sync = async () => {
-  await PersonModel.sync({ force: true }); // !!! Will drop existing table !!!
+  await PersonModel.sync({force: true}); // !!! Will drop existing table !!!
+  await seed();
 };
 
-export const seed = async (count: number) => {
+const seed = async () => {
+  const required = parseInt(process.env.SEED_COUNT || '20000', 10);
+
+  log.info('PERSON_SEED_START', `Starting to seed the database with ${required} people`, {required});
+
   const records = [];
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < required; i++) {
     records.push(createRandom());
   }
 
   await PersonModel.bulkCreate(records);
+
+  const resulting = await PersonModel.count();
+
+  log.info('PERSON_SEED_COMPLETE', `Seeded the database with ${resulting} people`, {resulting, required});
 };
 
 const createRandom = () => {

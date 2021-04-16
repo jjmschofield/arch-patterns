@@ -1,1 +1,2 @@
-export { init, sync, seed } from './model';
+export {init, sync} from './model';
+export {listPeople} from './list';
