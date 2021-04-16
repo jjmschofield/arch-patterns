@@ -1,0 +1,40 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "build": "shx rm -rf ./dist && tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^7.4.3",
+    "correlation-id": "^3.1.0",
+    "dotenv": "^8.2.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cors": "0.0.16",
+    "koa-helmet": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "sequelize": "^6.5.1",
+    "source-map-support": "^0.5.12",
+    "transactional-outbox": "file:../transactional-outbox",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/correlation-id": "^2.1.0",
+    "@types/dotenv-safe": "^5.0.3",
+    "@types/hapi__boom": "^7.4.0",
+    "@types/koa": "^2.0.48",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-cors": "^0.0.0",
+    "@types/koa-helmet": "^6.0.2",
+    "@types/koa-router": "^7.0.40",
+    "@types/node": "^12.0.3",
+    "@types/uuid": "^8.3.0",
+    "shx": "^0.3.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.5.1"
+  }
+}

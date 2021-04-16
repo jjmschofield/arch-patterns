@@ -1,5 +1,5 @@
 import {Context} from "koa";
-import log from '../../lib/logger'
+import log from '@common/logger'
 import {saveMessage} from "../messages";
 
 export const receiveCtrl = async (ctx: Context, next: Function) => {

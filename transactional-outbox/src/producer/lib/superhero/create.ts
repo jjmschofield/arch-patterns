@@ -3,7 +3,7 @@ import {getDb} from "../db";
 import correlator from "correlation-id";
 import {SuperHeroModel} from "./model";
 import {SuperHeroRecord} from "./types";
-import log from "../../../lib/logger";
+import log from "@common/logger";
 
 export const createSuperHero = async (name: string): Promise<SuperHeroRecord> => {
   const transaction = await getDb().transaction();

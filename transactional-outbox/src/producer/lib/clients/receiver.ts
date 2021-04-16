@@ -1,4 +1,4 @@
-import log from "../../../lib/logger";
+import log from "@common/logger";
 import needle from "needle";
 import {Message} from "../messages/types";
 

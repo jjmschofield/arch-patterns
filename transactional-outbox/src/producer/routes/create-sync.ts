@@ -1,5 +1,5 @@
 import {Context} from "koa";
-import log from "../../lib/logger";
+import log from "@common/logger";
 import {createSuperHero} from "../lib/superhero";
 import {v4 as uuidv4} from "uuid";
 import correlator from "correlation-id";
