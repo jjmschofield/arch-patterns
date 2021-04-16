@@ -1,7 +1,7 @@
-import {name} from 'faker';
-import {Sequelize, DataTypes, Model} from 'sequelize';
+import { name } from 'faker';
+import { Sequelize, DataTypes, Model } from 'sequelize';
 import log from '@common/logger';
-import {PersonRecord} from './types';
+import { PersonRecord } from './types';
 
 
 export class PersonModel extends Model {
@@ -40,14 +40,14 @@ export const init = (sequelize: Sequelize) => {
 };
 
 export const sync = async () => {
-  await PersonModel.sync({force: true}); // !!! Will drop existing table !!!
+  await PersonModel.sync({ force: true }); // !!! Will drop existing table !!!
   await seed();
 };
 
 const seed = async () => {
   const required = parseInt(process.env.SEED_COUNT || '20000', 10);
 
-  log.info('PERSON_SEED_START', `Starting to seed the database with ${required} people`, {required});
+  log.info('PERSON_SEED_START', `Starting to seed the database with ${required} people`, { required });
 
   const records = [];
 
@@ -59,7 +59,7 @@ const seed = async () => {
 
   const resulting = await PersonModel.count();
 
-  log.info('PERSON_SEED_COMPLETE', `Seeded the database with ${resulting} people`, {resulting, required});
+  log.info('PERSON_SEED_COMPLETE', `Seeded the database with ${resulting} people`, { resulting, required });
 };
 
 const createRandom = () => {

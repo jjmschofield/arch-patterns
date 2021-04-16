@@ -1,5 +1,5 @@
-import {PersonRecord} from './types';
-import {PersonModel} from "./model";
+import { PersonRecord } from './types';
+import { PersonModel } from './model';
 
 export const listPeople = async (): Promise<PersonRecord[]> => {
   const people = await PersonModel.findAll();

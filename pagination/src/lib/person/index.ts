@@ -1,2 +1,2 @@
-export {init, sync} from './model';
-export {listPeople} from './list';
+export { init, sync } from './model';
+export { listPeople } from './list';

@@ -1,1 +1,1 @@
-export {listPeopleCtrl} from './list';
+export { listPeopleCtrl } from './list';
