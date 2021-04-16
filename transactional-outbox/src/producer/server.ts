@@ -1,9 +1,11 @@
 import 'source-map-support/register';
+import 'module-alias/register';
+
 import Router from "koa-router";
 
-import log from '../lib/logger';
-import config from '../lib/config';
-import {createApp, startHttpServer} from "../lib/koa";
+import log from '@common/logger';
+import config from '@common/config';
+import {createApp, startHttpServer} from "@common/koa";
 import {initDb, syncDb, getDb} from "./lib/db";
 import {createCtrl, createSyncCtrl} from "./routes";
 

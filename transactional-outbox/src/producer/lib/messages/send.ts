@@ -1,6 +1,6 @@
 import {getNextMessageExclusively, releaseLock} from "./get";
 import {destroy} from "./destroy";
-import log from "../../../lib/logger";
+import log from "@common/logger";
 import {Message, MessageRecord} from "./types";
 import { MessageModel } from "./model";
 

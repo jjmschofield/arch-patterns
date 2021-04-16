@@ -2,7 +2,7 @@ import {Op, Transaction} from 'sequelize';
 import {MessageModel} from "./model";
 import {MessageRecord} from "./types";
 import {getDb} from "../db";
-import log from "../../../lib/logger";
+import log from "@common/logger";
 
 export const getNextMessageExclusively = async (retryDelayMs: number): Promise<MessageRecord | null> => {
   const transaction = await getDb().transaction();

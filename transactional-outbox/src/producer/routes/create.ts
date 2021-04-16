@@ -1,5 +1,5 @@
 import {Context} from "koa";
-import log from "../../lib/logger";
+import log from "@common/logger";
 import {createSuperHero} from "../lib/superhero";
 
 export const createCtrl = async (ctx: Context, next: Function) => {

@@ -1,5 +1,8 @@
-import config from "../lib/config";
-import log from "../lib/logger";
+import 'source-map-support/register';
+import 'module-alias/register';
+
+import config from "@common/config";
+import log from "@common/logger";
 import {getDb, initDb} from "./lib/db";
 import {startSendingMessages} from "./lib/messages";
 import {sendMessage} from "./lib/clients/receiver";

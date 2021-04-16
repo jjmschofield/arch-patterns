@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm --prefix ../common install",
     "build": "shx rm -rf ./dist && tsc",
     "start": "docker-compose up --build",
     "prestart": "npm run build",
-    "start:producer": "node dist/producer/server.js",
-    "start:relay": "node dist/producer/relay.js",
-    "start:receiver": "node dist/receiver/server.js",
+    "start:producer": "node dist/transactional-outbox/src/producer/server.js",
+    "start:relay": "node dist/transactional-outbox/src/producer/relay.js",
+    "start:receiver": "node dist/transactional-outbox/src/receiver/server.js",
     "start:dev:producer": "nodemon -e ts --watch src --exec 'npx ts-node ./src/producer/server.ts'",
     "start:dev:relay": "nodemon -e ts --watch src --exec 'npx ts-node ./src/receiver/relay.ts'",
     "start:dev:receiver": "nodemon -e ts --watch src --exec 'npx ts-node ./src/receiver/server.ts'",
@@ -27,6 +28,7 @@
     "koa-cors": "0.0.16",
     "koa-helmet": "^4.1.0",
     "koa-router": "^7.4.0",
+    "module-alias": "^2.2.2",
     "needle": "^2.6.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
@@ -54,5 +56,8 @@
     "tslint": "^5.16.0",
     "tslint-config-airbnb-base": "^0.3.0",
     "typescript": "^3.5.1"
+  },
+  "_moduleAliases": {
+    "@common"      : "dist/common"
   }
 }
