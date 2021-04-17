@@ -4,7 +4,7 @@ export const defaultOffsetParams = (): OffsetPaginationParams => {
   return { limit: 10, offset: 0 };
 };
 
-export const calcOffsetLinks = (paginated: PaginatedCollection<any, OffsetPaginationParams>, url: string): PaginationLinks => {
+export const calcOffsetLinks = (paginated: PaginatedCollection<unknown, OffsetPaginationParams>, url: string): PaginationLinks => {
   const first = calcFirst(paginated.params, paginated.collection);
   const last = calcLast(paginated.params, paginated.collection, paginated.total);
   const prev = calcPrevOffset(paginated.params, paginated.collection);
