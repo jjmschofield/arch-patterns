@@ -32,6 +32,11 @@ export const init = (sequelize: Sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    cursor: {
+      type: DataTypes.BIGINT,
+      autoIncrement: true,
+      unique: true,
+    },
   }, {
     sequelize,
     timestamps: true,

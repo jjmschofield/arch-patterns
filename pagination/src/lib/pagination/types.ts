@@ -16,3 +16,8 @@ export interface OffsetPaginationParams {
   limit: number;
   offset: number;
 }
+
+export interface CursorPaginationParams<T> {
+  cursor: T;
+  limit: number;
+}

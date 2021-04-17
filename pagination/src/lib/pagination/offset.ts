@@ -24,22 +24,22 @@ const calcFirst = (pagination: OffsetPaginationParams, collection: unknown[]): n
   return 0;
 };
 
-const calcLast = (pagination: OffsetPaginationParams, collection: unknown[], max: number): number | null => {
+const calcLast = (pagination: OffsetPaginationParams, collection: unknown[], total: number): number | null => {
   if (collection.length < 1) return null;
 
-  const potential = max - pagination.limit;
+  const potential = total - pagination.limit;
 
   if (potential < 0) return 0;
 
   return potential;
 };
 
-const calcNextOffset = (pagination: OffsetPaginationParams, collection: unknown[], max: number): number | null => {
+const calcNextOffset = (pagination: OffsetPaginationParams, collection: unknown[], total: number): number | null => {
   if (collection.length < 1) return null;
 
   const potential = pagination.offset + pagination.limit;
 
-  if (potential >= max) {
+  if (potential >= total) {
     return null;
   }
 

@@ -1,2 +1,3 @@
 export { calcOffsetLinks, defaultOffsetParams } from './offset';
-export { PaginationLinks, PaginatedCollection, OffsetPaginationParams } from './types';
+export { defaultCursorStringParams, defaultCursorNumberParams } from './cursor';
+export { PaginationLinks, PaginatedCollection, OffsetPaginationParams, CursorPaginationParams } from './types';

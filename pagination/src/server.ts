@@ -6,8 +6,9 @@ import Router from 'koa-router';
 import log from '@common/logger';
 import config from '@common/config';
 import { createApp, startHttpServer } from '@common/koa';
+
 import { initDb, syncDb, getDb } from './lib/db';
-import { noPaginationCtrl, offsetPaginationCtrl } from './routes';
+import { cursorPaginationCtrl, noPaginationCtrl, offsetPaginationCtrl } from './routes';
 
 export const server = async () => {
   const router = new Router();
@@ -16,6 +17,7 @@ export const server = async () => {
 
   router.get('/no-pagination', noPaginationCtrl);
   router.get('/offset-pagination', offsetPaginationCtrl);
+  router.get('/cursor-pagination', cursorPaginationCtrl);
 
   startHttpServer(app, process.env.HTTP_PORT || '80');
 };
