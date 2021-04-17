@@ -1,1 +1,1 @@
-export { listPeopleCtrl } from './list';
+export { noPaginationCtrl, offsetPaginationCtrl } from './list';
