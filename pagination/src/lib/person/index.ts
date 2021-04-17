@@ -1,2 +1,3 @@
 export { init, sync } from './model';
-export { listPeople, listPeopleWithOffset } from './list';
+export { listPeople } from './list';
+export { listPeopleOffset } from './list-offset';

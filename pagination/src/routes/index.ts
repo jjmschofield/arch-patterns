@@ -1,1 +1,2 @@
-export { noPaginationCtrl, offsetPaginationCtrl } from './list';
+export { noPaginationCtrl } from './list';
+export { offsetPaginationCtrl } from './list-offset';

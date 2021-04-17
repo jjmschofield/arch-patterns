@@ -7,7 +7,7 @@ import log from '@common/logger';
 import config from '@common/config';
 import { createApp, startHttpServer } from '@common/koa';
 import { initDb, syncDb, getDb } from './lib/db';
-import {noPaginationCtrl, offsetPaginationCtrl} from './routes';
+import { noPaginationCtrl, offsetPaginationCtrl } from './routes';
 
 export const server = async () => {
   const router = new Router();
