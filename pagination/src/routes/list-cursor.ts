@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { listPeopleCursor } from '../lib/person';
-import { calcOffsetLinks, CursorPaginationParams, defaultCursorNumberParams, defaultOffsetParams, OffsetPaginationParams } from '../lib/pagination';
+import { CursorPaginationParams, defaultCursorNumberParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
 
 
