@@ -12,6 +12,15 @@ Pagination solves these problems by breaking up collections into manageable chun
 
 There are multiple approaches to pagination with varying trade offs.
 
+## TODO / MUST DO 
+1) Add implementations for filtering (maybe) and ordering (definitely) in both offset and cursor
+
+2) Update this readme with thinking on choices from:
+
+- https://slack.engineering/evolving-api-pagination-at-slack/
+- https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
+- https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
+
 ## Running
 ```shell script
 $ npm --prefix ../common install
@@ -73,13 +82,68 @@ In many systems it might take time for such problems to become apparent (as data
   
 
 ## Offset
+**GET: http://localhost:3000/offset-pagination?offset=10&limit=1**
 
+```json
+{
+       "data": {
+           "products": [
+               {
+                   "id": "24857400-ad7b-4268-a780-dedfe3b2feac",
+                   "name": "Refined Plastic Tuna",
+                   "color": "cyan",
+                   "material": "Concrete",
+                   "price": 863,
+                   "cursor": "11",
+                   "createdAt": "2021-04-19T19:46:45.857Z",
+                   "updatedAt": "2021-04-19T19:46:45.857Z"
+               }
+           ]
+       },
+       "meta": {
+           "total": 20000
+       },
+       "links": {
+           "self": "http://localhost:3000/offset-pagination?offset=10&limit=1",
+           "first": "http://localhost:3000/offset-pagination?offset=0&limit=1",
+           "last": "http://localhost:3000/offset-pagination?offset=19999&limit=1",
+           "prev": "http://localhost:3000/offset-pagination?offset=9&limit=1",
+           "next": "http://localhost:3000/offset-pagination?offset=11&limit=1"
+       }
+   }
+```
 
 ## Cursor
+**GET: http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1**
 
+```json
+{
+    "data": {
+        "products": [
+            {
+                "id": "1b6e5cf7-1b00-406e-9099-008dfc8683a5",
+                "name": "Gorgeous Wooden Fish",
+                "color": "magenta",
+                "material": "Cotton",
+                "price": 61,
+                "cursor": "11",
+                "createdAt": "2021-04-19T19:35:44.715Z",
+                "updatedAt": "2021-04-19T19:35:44.715Z"
+            }
+        ]
+    },
+    "meta": {
+        "total": 20000
+    },
+    "links": {
+        "self": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1",
+        "first": "http://localhost:3000/cursor-pagination?limit=1",
+        "last": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjE5OTk5&limit=1",
+        "prev": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1",
+        "next": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEx&limit=1"
+    }
+}
+```
 
-// https://slack.engineering/evolving-api-pagination-at-slack/
-// https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
-// https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
 
 
