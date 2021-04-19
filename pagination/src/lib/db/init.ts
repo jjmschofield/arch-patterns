@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import * as person from '../person';
+import * as product from '../product';
 
 let sequelize: Sequelize;
 
@@ -12,7 +12,7 @@ export const initDb = async () => {
 
   await sequelize.authenticate(); // just tests that the connection works
 
-  person.init(sequelize);
+  product.init(sequelize);
 };
 
 export const getDb = (): Sequelize => {

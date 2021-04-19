@@ -1,10 +1,7 @@
-import { OffsetPaginationParams, PaginatedCollection, PaginationLinks } from './types';
+import { OffsetPaginatedCollection, OffsetPaginationParams } from './types';
+import { PaginationLinks } from "../types";
 
-export const defaultOffsetParams = (): OffsetPaginationParams => {
-  return { limit: 10, offset: 0 };
-};
-
-export const calcOffsetLinks = (paginated: PaginatedCollection<unknown, OffsetPaginationParams>, url: string): PaginationLinks => {
+export const calcOffsetLinks = (paginated: OffsetPaginatedCollection<unknown>, url: string): PaginationLinks => {
   const first = calcFirst(paginated.params, paginated.collection);
   const last = calcLast(paginated.params, paginated.collection, paginated.total);
   const prev = calcPrevOffset(paginated.params, paginated.collection);

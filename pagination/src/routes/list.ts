@@ -1,8 +1,8 @@
 import { Context } from 'koa';
-import { listPeople } from '../lib/person';
+import { listProducts } from '../lib/product';
 
 export const noPaginationCtrl = async (ctx: Context) => {
-  const people = await listPeople();
+  const products = await listProducts();
   ctx.status = 200;
-  ctx.body = { data: { people } };
+  ctx.body = { data: { products } };
 };

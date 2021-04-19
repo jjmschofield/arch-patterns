@@ -1,36 +1,41 @@
 import { Context } from 'koa';
-import { listPeopleCursor } from '../lib/person';
-import { CursorPaginationParams, defaultCursorNumberParams } from '../lib/pagination';
+import { listProductsCursor } from '../lib/product';
+import { calcCursorLinks, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
+import { badRequest } from "@hapi/boom";
 
 
 export const cursorPaginationCtrl = async (ctx: Context) => {
   const pagination = getPaginationParams(ctx);
 
-  const paginated = await listPeopleCursor(pagination);
+  const paginated = await listProductsCursor(pagination);
 
   ctx.status = 200;
 
   ctx.body = {
     data: {
-      people: paginated.collection,
+      products: paginated.collection,
     },
     meta: {
       total: paginated.total,
     },
-    // links: calcOffsetLinks(paginated, `${ctx.protocol}://${ctx.host}${ctx.path}`), // TODO - links
+    links: calcCursorLinks(paginated, `${ctx.protocol}://${ctx.host}${ctx.path}`),
   };
 };
 
-const getPaginationParams = (ctx: Context): CursorPaginationParams<number> => {
-  const params = defaultCursorNumberParams();
+const getPaginationParams = (ctx: Context): CursorPaginationParams => {
+  const params = defaultCursorParams();
 
   if (ctx.query.limit) {
     params.limit = tryGetInteger(ctx.query.limit);
   }
 
   if (ctx.query.cursor) {
-    params.cursor = tryGetInteger(ctx.query.cursor);
+    if (typeof ctx.query.cursor !== 'string') {
+      throw badRequest('only one cursor param is allowed');
+    }
+
+    params.cursor = ctx.query.cursor;
   }
 
   return params;

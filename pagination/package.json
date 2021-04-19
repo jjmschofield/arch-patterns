@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npm --prefix ../common install",
+    "preinstall": "npm --prefix ../common ci",
     "build": "shx rm -rf ./dist && tsc",
     "start": "docker-compose up --build",
     "prestart": "npm run build",

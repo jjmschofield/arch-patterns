@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import { listPeopleOffset } from '../lib/person';
+import { listProductsOffset } from '../lib/product';
 import { calcOffsetLinks, defaultOffsetParams, OffsetPaginationParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
 
@@ -7,13 +7,13 @@ import { tryGetInteger } from '../lib/numbers';
 export const offsetPaginationCtrl = async (ctx: Context) => {
   const pagination = getPaginationParams(ctx);
 
-  const paginated = await listPeopleOffset(pagination);
+  const paginated = await listProductsOffset(pagination);
 
   ctx.status = 200;
 
   ctx.body = {
     data: {
-      people: paginated.collection,
+      products: paginated.collection,
     },
     meta: {
       total: paginated.total,

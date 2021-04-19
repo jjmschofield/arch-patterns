@@ -1,5 +1,5 @@
-import * as person from '../person';
+import * as product from '../product';
 
 export const syncDb = async () => {
-  await person.sync();
+  await product.sync();
 };
