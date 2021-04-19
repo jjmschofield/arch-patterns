@@ -1,5 +1,5 @@
 import { OffsetPaginatedCollection, OffsetPaginationParams } from './types';
-import { PaginationLinks } from "../types";
+import { PaginationLinks } from '../types';
 
 export const calcOffsetLinks = (paginated: OffsetPaginatedCollection<unknown>, url: string): PaginationLinks => {
   const first = calcFirst(paginated.params, paginated.collection);

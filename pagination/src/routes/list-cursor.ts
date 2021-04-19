@@ -2,7 +2,7 @@ import { Context } from 'koa';
 import { listProductsCursor } from '../lib/product';
 import { calcCursorLinks, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
-import { badRequest } from "@hapi/boom";
+import { badRequest } from '@hapi/boom';
 
 
 export const cursorPaginationCtrl = async (ctx: Context) => {

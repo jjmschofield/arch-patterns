@@ -20,6 +20,7 @@ There are multiple approaches to pagination with varying trade offs.
 - https://slack.engineering/evolving-api-pagination-at-slack/
 - https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
 - https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
+- https://www.django-rest-framework.org/api-guide/pagination/#:~:text=Cursor%20based%20pagination%20requires%20that,more%20complex%20than%20other%20schemes.
 
 ## Running
 ```shell script

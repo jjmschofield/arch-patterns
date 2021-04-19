@@ -1,5 +1,5 @@
-import { CursorPaginatedCollection } from "./types";
-import { PaginationLinks } from "../types";
+import { CursorPaginatedCollection } from './types';
+import { PaginationLinks } from '../types';
 
 export const calcCursorLinks = (paginated: CursorPaginatedCollection<unknown>, url: string): PaginationLinks => {
   const { self, last, prev, next } = paginated.cursors;

@@ -1,4 +1,4 @@
-import { CursorPaginationParams } from "./types";
+import { CursorPaginationParams } from './types';
 
 export const defaultCursorParams = (): CursorPaginationParams => {
   return {

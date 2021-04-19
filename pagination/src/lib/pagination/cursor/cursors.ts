@@ -1,5 +1,5 @@
-import { CursorPaginationParams, Cursors } from "./types";
-import { encodeCursor } from "./encoding";
+import { CursorPaginationParams, Cursors } from './types';
+import { encodeCursor } from './encoding';
 
 
 export const calcCursors = (pagination: CursorPaginationParams, collection: object[], prevCollection: object[], total: number, lastCollection?: object[]): Cursors => {
