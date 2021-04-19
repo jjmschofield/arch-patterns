@@ -27,10 +27,13 @@ const getTotalProducts = async (): Promise<number> => {
 };
 
 const getCollection = async (pagination: CursorPaginationParams): Promise<ProductModel[]> => {
+
+  // console.log('cursor', decodeCursor(pagination.cursor!, pagination.field, pagination.type));
+
   return ProductModel.findAll({
     where: {
-      cursor: {
-        [Op.gt]: pagination.cursor ? decodeCursor(pagination.cursor, pagination.field) : '0',
+      [pagination.field]: {
+        [Op.gt]: pagination.cursor ? decodeCursor(pagination.cursor, pagination.field, pagination.type) : '0',
       },
     },
     order: [[pagination.field, 'ASC']],
@@ -42,8 +45,8 @@ const getPreviousCollection = async (pagination: CursorPaginationParams) => {
   return ProductModel.findAll({
     attributes: [pagination.field],
     where: {
-      cursor: {
-        [Op.lte]: pagination.cursor ? decodeCursor(pagination.cursor, pagination.field) : '0',
+      [pagination.field]: {
+        [Op.lte]: pagination.cursor ? decodeCursor(pagination.cursor, pagination.field, pagination.type) : '0',
       },
     },
     order: [[pagination.field, 'DESC']],

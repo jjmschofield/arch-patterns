@@ -1,4 +1,4 @@
-import { CursorPaginationParams, Cursors } from './types';
+import { CURSOR_TYPES, CursorPaginationParams, Cursors } from './types';
 import { encodeCursor } from './encoding';
 
 
@@ -19,7 +19,7 @@ const calcSelf = (pagination: CursorPaginationParams, collection: unknown[], pre
 
   if (!self) return null;
 
-  return tryGetCursor(self, field);
+  return tryGetCursor(self, field, pagination.type);
 };
 
 const calcNext = (pagination: CursorPaginationParams, collection: unknown[], field: string, total: number): string | null => {
@@ -31,7 +31,9 @@ const calcNext = (pagination: CursorPaginationParams, collection: unknown[], fie
 
   if (!next) return null;
 
-  return tryGetCursor(next, field);
+  // TODO - handle on last
+
+  return tryGetCursor(next, field, pagination.type);
 };
 
 const calcPrev = (pagination: CursorPaginationParams, collection: unknown[], prevCollection: unknown[], field: string, total: number): string | null => {
@@ -42,7 +44,7 @@ const calcPrev = (pagination: CursorPaginationParams, collection: unknown[], pre
 
   if (!prev) return null;
 
-  return tryGetCursor(prev, field);
+  return tryGetCursor(prev, field, pagination.type);
 };
 
 const calcLast = (pagination: CursorPaginationParams, collection: unknown[], lastCollection: unknown[], field: string, total: number): string | null => {
@@ -53,13 +55,15 @@ const calcLast = (pagination: CursorPaginationParams, collection: unknown[], las
 
   if (!last) return null;
 
-  return tryGetCursor(last, field);
+  // TODO - handle on last
+
+  return tryGetCursor(last, field, pagination.type);
 };
 
-const tryGetCursor = (obj: any, field: string): string => {
+const tryGetCursor = (obj: any, field: string, type: CURSOR_TYPES): string => {
   if (!obj[field]) {
     throw new Error('cursor field not set on collection item');
   }
 
-  return encodeCursor(field, obj[field].toString());
+  return encodeCursor(field, obj[field], type);
 };

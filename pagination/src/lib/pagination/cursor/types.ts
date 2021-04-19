@@ -14,6 +14,12 @@ export interface Cursors {
 
 export interface CursorPaginationParams {
   cursor: string | null;
+  type: CURSOR_TYPES;
   field: string;
   limit: number;
+}
+
+export enum CURSOR_TYPES {
+  STRING = 'STRING',
+  DATE ='DATE',
 }

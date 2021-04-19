@@ -1,4 +1,4 @@
-import { commerce } from 'faker';
+import { commerce, date } from 'faker';
 import { Sequelize, DataTypes, Model } from 'sequelize';
 import log from '@common/logger';
 import { ProductRecord } from './types';
@@ -60,6 +60,9 @@ export const init = (sequelize: Sequelize) => {
       autoIncrement: true,
       unique: true,
     },
+    updatedAt: {
+      type: DataTypes.DATE,
+    },
   }, {
     sequelize,
     timestamps: true,
@@ -96,5 +99,7 @@ const createRandom = () => {
     color: `${commerce.color()}`,
     material: `${commerce.productMaterial()}`,
     price: `${commerce.price()}`,
+    updatedAt: date.soon(),
+    createdAt: date.past(),
   };
 };

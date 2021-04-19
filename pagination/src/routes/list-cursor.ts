@@ -1,8 +1,8 @@
 import { Context } from 'koa';
 import { listProductsCursor } from '../lib/product';
-import { calcCursorLinks, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
+import { calcCursorLinks, CURSOR_TYPES, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
-import { badRequest } from '@hapi/boom';
+import { badRequest, notImplemented } from '@hapi/boom';
 
 
 export const cursorPaginationCtrl = async (ctx: Context) => {
@@ -25,6 +25,24 @@ export const cursorPaginationCtrl = async (ctx: Context) => {
 
 const getPaginationParams = (ctx: Context): CursorPaginationParams => {
   const params = defaultCursorParams();
+
+  if (ctx.query.ordering) {
+    if (typeof ctx.query.ordering !== 'string') {
+      throw notImplemented('only single ordering keys are supported');
+    }
+
+    const allowedOrdering = ['cursor', 'createdAt', 'updatedAt'];
+
+    if (!allowedOrdering.includes(ctx.query.ordering)) {
+      throw badRequest(`ordering must be one of ${allowedOrdering.join(', ')}`);
+    }
+
+    params.field = ctx.query.ordering;
+
+    if (params.field === 'createdAt' || params.field === 'updatedAt') {
+      params.type = CURSOR_TYPES.DATE;
+    }
+  }
 
   if (ctx.query.limit) {
     params.limit = tryGetInteger(ctx.query.limit);
