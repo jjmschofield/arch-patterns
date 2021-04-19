@@ -17,10 +17,8 @@
     "koa-cors": "0.0.16",
     "koa-helmet": "^4.1.0",
     "koa-router": "^7.4.0",
-    "pagination": "file:../pagination",
     "sequelize": "^6.5.1",
     "source-map-support": "^0.5.12",
-    "transactional-outbox": "file:../pagination",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
