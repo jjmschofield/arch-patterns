@@ -12,10 +12,14 @@ Pagination solves these problems by breaking up collections into manageable chun
 
 There are multiple approaches to pagination with varying trade offs.
 
-## TODO / MUST DO 
-1) Add implementations for filtering (maybe) and ordering (definitely) in both offset and cursor
+## TODO
+1) Add implementations for filtering
 
-2) Update this readme with thinking on choices from:
+2) Update this doc with description of the pagination types
+
+3) Add page based pagination example
+
+4) Update this readme with thinking on how to make a choice on pagination type, referencing:
 
 - https://slack.engineering/evolving-api-pagination-at-slack/
 - https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
@@ -115,21 +119,20 @@ In many systems it might take time for such problems to become apparent (as data
 ```
 
 ## Cursor
-**GET: http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1**
+**GET: http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ==**
 
 ```json
-{
+
     "data": {
         "products": [
             {
-                "id": "1b6e5cf7-1b00-406e-9099-008dfc8683a5",
-                "name": "Gorgeous Wooden Fish",
-                "color": "magenta",
-                "material": "Cotton",
-                "price": 61,
-                "cursor": "11",
-                "createdAt": "2021-04-19T19:35:44.715Z",
-                "updatedAt": "2021-04-19T19:35:44.715Z"
+                "id": "bb505d05-ad29-4f1f-819a-a5a6db48a552",
+                "name": "Awesome Fresh Pizza",
+                "color": "indigo",
+                "material": "Concrete",
+                "price": 323,
+                "createdAt": "2020-05-03T19:00:16.571Z",
+                "updatedAt": "2021-04-29T18:54:42.063Z"
             }
         ]
     },
@@ -137,11 +140,11 @@ In many systems it might take time for such problems to become apparent (as data
         "total": 20000
     },
     "links": {
-        "self": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1",
-        "first": "http://localhost:3000/cursor-pagination?limit=1",
-        "last": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjE5OTk5&limit=1",
-        "prev": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEw&limit=1",
-        "next": "http://localhost:3000/cursor-pagination?cursor=Y3Vyc29yOjEx&limit=1"
+        "self": null,
+        "first": "http://localhost:3000/cursor-pagination/?limit=1&sort=material",
+        "last": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIxLTA0LTI3VDA0OjExOjM2LjM0MFoiLCJpZCI6ImEwYmI2ZjU0LTc5ZjMtNGZmMC1iNGZlLWMzYTBmYjEzNTI2ZSIsIm1hdGVyaWFsIjoiV29vZGVuIn0=",
+        "prev": null,
+        "next": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ=="
     }
 }
 ```
