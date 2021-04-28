@@ -132,7 +132,8 @@ The cursor encoding is not optimized and can easily be shrunk / compressed.
 
 The cursor values are being passed directly into the ORM without validation - do check the posiblity for injection attacks and consider if your decoder should be validating results.
 
-**Code **
+**Code**
+
 [Library implementation](src/lib/pagination/cursor)
 
 [Model usage](src/lib/product/list-cursor.ts)
