@@ -12,20 +12,6 @@ Pagination solves these problems by breaking up collections into manageable chun
 
 There are multiple approaches to pagination with varying trade offs.
 
-## TODO
-1) Add implementations for filtering
-
-2) Update this doc with description of the pagination types
-
-3) Add page based pagination example
-
-4) Update this readme with thinking on how to make a choice on pagination type, referencing:
-
-- https://slack.engineering/evolving-api-pagination-at-slack/
-- https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
-- https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
-- https://www.django-rest-framework.org/api-guide/pagination/#:~:text=Cursor%20based%20pagination%20requires%20that,more%20complex%20than%20other%20schemes.
-
 ## Running
 ```shell script
 $ npm --prefix ../common install
@@ -173,6 +159,20 @@ The cursor contains information to provide to an ORM quuery without translation 
        }
    }
 ```
+
+## TODO
+1) Add implementations for filtering
+
+2) Update this doc with description of the pagination types
+
+3) Add page based pagination example
+
+4) Update this readme with thinking on how to make a choice on pagination type, referencing:
+
+- https://slack.engineering/evolving-api-pagination-at-slack/
+- https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
+- https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
+- https://www.django-rest-framework.org/api-guide/pagination/#:~:text=Cursor%20based%20pagination%20requires%20that,more%20complex%20than%20other%20schemes.
 
 
 
