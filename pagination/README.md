@@ -176,17 +176,19 @@ The cursor values are being passed directly into the ORM without validation - do
 
 2) Fix pagination links for cursor (prev get broken on the second collection set) 
 
-2) Update this doc with description of the pagination types
+3) Review + fix validation in cursor decoding to make the implementaiton safer 
 
-3) Add page based pagination example
+3) Update this doc with description of the pagination types
 
-4) Update this readme with thinking on how to make a choice on pagination type, referencing:
+4) Add page based pagination example
+
+5) Update this readme with thinking on how to make a choice on pagination type, referencing:
 
 - https://slack.engineering/evolving-api-pagination-at-slack/
 - https://medium.com/swlh/how-to-implement-cursor-pagination-like-a-pro-513140b65f32
 - https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
 - https://www.django-rest-framework.org/api-guide/pagination/#:~:text=Cursor%20based%20pagination%20requires%20that,more%20complex%20than%20other%20schemes.
 
-5) Optimize offset token
+6) Optimize offset token
 
 
