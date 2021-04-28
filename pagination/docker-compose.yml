@@ -9,7 +9,7 @@ services:
       - db
     environment:
       - PROC_TITLE=webserver
-      - SEED_COUNT=100
+      - SEED_COUNT=20000
       - DB_CONNECTION_STRING=postgres://db_user:db_password@db:5432/webserver_database
 
   db:
