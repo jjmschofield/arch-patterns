@@ -84,6 +84,63 @@ Requests could take potential infinite resources to complete for both the server
 In many systems it might take time for such problems to become apparent (as data sets scale through general usage).
 
 ### Implementation
+
+
+## Cursor
+### TLDR;
+Provides an encoded cursor to page through results - handling problems of `offset` and `page` strategies for large records sets scale.
+
+Provides a stable sort using `createdAt` and `id` fields, granting support for ordering by non-unique fields.
+
+Cursor is in the form of a Base64 encoded JSON object.
+
+### Calling
+
+**GET: http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ==**
+
+
+```json
+
+    "data": {
+        "products": [
+            {
+                "id": "bb505d05-ad29-4f1f-819a-a5a6db48a552",
+                "name": "Awesome Fresh Pizza",
+                "color": "indigo",
+                "material": "Concrete",
+                "price": 323,
+                "createdAt": "2020-05-03T19:00:16.571Z",
+                "updatedAt": "2021-04-29T18:54:42.063Z"
+            }
+        ]
+    },
+    "meta": {
+        "total": 20000
+    },
+    "links": {
+        "self": null,
+        "first": "http://localhost:3000/cursor-pagination/?limit=1&sort=material",
+        "last": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIxLTA0LTI3VDA0OjExOjM2LjM0MFoiLCJpZCI6ImEwYmI2ZjU0LTc5ZjMtNGZmMC1iNGZlLWMzYTBmYjEzNTI2ZSIsIm1hdGVyaWFsIjoiV29vZGVuIn0=",
+        "prev": null,
+        "next": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ=="
+    }
+}
+```
+
+Decoded next cursor:
+
+```json
+{"createdAt":"2020-05-03T19:00:16.571Z","id":"bb505d05-ad29-4f1f-819a-a5a6db48a552","material":"Concrete"}
+```
+
+### Considerations
+
+### Implementation
+[Library implementation](src/lib/pagination/cursor)
+
+[Model usage](src/lib/product/list-cursor.ts)
+
+[Route usage](src/routes/list-cursor.ts)
   
 
 ## Offset
@@ -117,36 +174,6 @@ In many systems it might take time for such problems to become apparent (as data
    }
 ```
 
-## Cursor
-**GET: http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ==**
-
-```json
-
-    "data": {
-        "products": [
-            {
-                "id": "bb505d05-ad29-4f1f-819a-a5a6db48a552",
-                "name": "Awesome Fresh Pizza",
-                "color": "indigo",
-                "material": "Concrete",
-                "price": 323,
-                "createdAt": "2020-05-03T19:00:16.571Z",
-                "updatedAt": "2021-04-29T18:54:42.063Z"
-            }
-        ]
-    },
-    "meta": {
-        "total": 20000
-    },
-    "links": {
-        "self": null,
-        "first": "http://localhost:3000/cursor-pagination/?limit=1&sort=material",
-        "last": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIxLTA0LTI3VDA0OjExOjM2LjM0MFoiLCJpZCI6ImEwYmI2ZjU0LTc5ZjMtNGZmMC1iNGZlLWMzYTBmYjEzNTI2ZSIsIm1hdGVyaWFsIjoiV29vZGVuIn0=",
-        "prev": null,
-        "next": "http://localhost:3000/cursor-pagination/?limit=1&sort=material&cursor=eyJjcmVhdGVkQXQiOiIyMDIwLTA1LTAzVDE5OjAwOjE2LjU3MVoiLCJpZCI6ImJiNTA1ZDA1LWFkMjktNGYxZi04MTlhLWE1YTZkYjQ4YTU1MiIsIm1hdGVyaWFsIjoiQ29uY3JldGUifQ=="
-    }
-}
-```
 
 
 
