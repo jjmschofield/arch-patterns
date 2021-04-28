@@ -88,11 +88,7 @@ In many systems it might take time for such problems to become apparent (as data
 
 ## Cursor
 ### TLDR;
-Provides an encoded cursor to page through results - handling problems of `offset` and `page` strategies for large records sets scale.
-
-Provides a stable sort using `createdAt` and `id` fields, granting support for ordering by non-unique fields.
-
-Cursor is in the form of a Base64 encoded JSON object.
+Provides an encoded cursor to page through results - handling problems of `offset` and `page` strategies for large records sets at scale.
 
 ### Calling
 
@@ -136,6 +132,10 @@ Decoded next cursor:
 ### Considerations
 
 ### Implementation
+This implementation provides a stable sort solution (defaulting to `createdAt` and `id` fields) and granting support for ordering by non-unique fields.
+
+The cursor contains information to provide to an ORM quuery without translation - potential resulting in coupling of column names to cursors.
+
 [Library implementation](src/lib/pagination/cursor)
 
 [Model usage](src/lib/product/list-cursor.ts)
