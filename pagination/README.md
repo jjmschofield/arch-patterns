@@ -14,7 +14,6 @@ There are multiple approaches to pagination with varying trade offs.
 
 ## Running
 ```shell script
-$ npm --prefix ../common install
 $ npm i
 $ npm run start
 ```
