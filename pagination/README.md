@@ -124,7 +124,7 @@ Decoded next cursor:
 ### Implementation
 This implementation provides a stable sort solution (defaulting to `createdAt` and `id` fields) and granting support for ordering by non-unique fields.
 
-** Watch out** 
+**Watch out** 
 
 The cursor contains information to provide to an ORM quuery without translation - potential resulting in coupling of column names to cursors. 
 
@@ -132,7 +132,7 @@ The cursor encoding is not optimized and can easily be shrunk / compressed.
 
 The cursor values are being passed directly into the ORM without validation - do check the posiblity for injection attacks and consider if your decoder should be validating results.
 
-** Code **
+**Code **
 [Library implementation](src/lib/pagination/cursor)
 
 [Model usage](src/lib/product/list-cursor.ts)
