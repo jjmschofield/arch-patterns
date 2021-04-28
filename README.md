@@ -9,6 +9,11 @@ It's intended to be education, both for the author and for anyone who stumbles a
 
 
 ## Patterms
+[Pagination](/pagintion) 
+
+Want to return a collection of items over an API endpoint? This is definitely for you.
+
+
 [Transactional Outbox](/transactional-outbox) 
 
 Want to make sure that you have an atomic event accompanying your record change? This might be for you
