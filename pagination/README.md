@@ -175,6 +175,8 @@ The cursor values are being passed directly into the ORM without validation - do
 ## TODO
 1) Add implementations for filtering
 
+2) Fix pagination links for cursor (prev get broken on the second collection set) 
+
 2) Update this doc with description of the pagination types
 
 3) Add page based pagination example
