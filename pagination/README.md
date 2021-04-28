@@ -112,7 +112,11 @@ Provides an encoded cursor to page through results - handling problems of `offse
 Decoded next cursor:
 
 ```json
-{"createdAt":"2020-05-03T19:00:16.571Z","id":"bb505d05-ad29-4f1f-819a-a5a6db48a552","material":"Concrete"}
+{
+  "createdAt":"2020-05-03T19:00:16.571Z",
+  "id":"bb505d05-ad29-4f1f-819a-a5a6db48a552",
+  "material":"Concrete"
+}
 ```
 
 ### Considerations
@@ -120,7 +124,7 @@ Decoded next cursor:
 ### Implementation
 This implementation provides a stable sort solution (defaulting to `createdAt` and `id` fields) and granting support for ordering by non-unique fields.
 
-The cursor contains information to provide to an ORM quuery without translation - potential resulting in coupling of column names to cursors.
+The cursor contains information to provide to an ORM quuery without translation - potential resulting in coupling of column names to cursors. The cursor encoding is not optimized and can easily be shrunk / compressed.
 
 [Library implementation](src/lib/pagination/cursor)
 
@@ -174,6 +178,6 @@ The cursor contains information to provide to an ORM quuery without translation 
 - https://uxdesign.cc/why-facebook-says-cursor-pagination-is-the-greatest-d6b98d86b6c0
 - https://www.django-rest-framework.org/api-guide/pagination/#:~:text=Cursor%20based%20pagination%20requires%20that,more%20complex%20than%20other%20schemes.
 
-
+5) Optimize offset token
 
 
