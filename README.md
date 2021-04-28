@@ -9,7 +9,7 @@ It's intended to be education, both for the author and for anyone who stumbles a
 
 
 ## Patterms
-[Pagination](/pagintion) 
+[Pagination](/pagination) 
 
 Want to return a collection of items over an API endpoint? This is definitely for you.
 
