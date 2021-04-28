@@ -99,7 +99,6 @@ In many systems it might take time for such problems to become apparent (as data
                    "color": "cyan",
                    "material": "Concrete",
                    "price": 863,
-                   "cursor": "11",
                    "createdAt": "2021-04-19T19:46:45.857Z",
                    "updatedAt": "2021-04-19T19:46:45.857Z"
                }
