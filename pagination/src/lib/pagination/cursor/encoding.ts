@@ -31,6 +31,7 @@ export const decodeCursor = (cursor: string, pagination: CursorPaginationParams)
   return decoded;
 };
 
+// TODO - watch out! the typing here is a lie - there is some validation missing
 const tryGetValueForField = (field: string, record: Record): string | Number | Date => {
   if (typeof record[field] === 'undefined') {
     throw new Error(`record does not have required field ${field}`);
