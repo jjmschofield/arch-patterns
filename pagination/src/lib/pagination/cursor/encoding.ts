@@ -1,39 +1,40 @@
-import { CURSOR_TYPES } from "./types";
+import { Cursor, CursorPaginationParams } from "./types";
 
-export const encodeCursor = (field: string, value: string | Date, type: CURSOR_TYPES): string => {
-  let serialized: string;
+interface Record {
+  [key: string]: string | Number | Date;
+}
 
-  switch (type) {
-    case CURSOR_TYPES.STRING:
-      serialized = value as string;
-      break;
-    case CURSOR_TYPES.DATE:
-      const date = value as Date;
-      serialized = date.getTime().toString(); // TODO - watch for oddness in Date field in postgres
-      break;
-    default:
-      serialized = value as string;
-      break;
-  }
+// TODO - resulting cursors are a bit bigger then they need to be
+export const encodeCursor = (pagination: CursorPaginationParams, record: Record): string => { // TODO - coupling database column names to cursor values?
+  const cursor: Cursor = {};
 
-  return Buffer.from(`${field}:${serialized}`).toString('base64');
+  pagination.sort.stable.forEach(field => cursor[field] = tryGetValueForField(field, record));
+
+  pagination.sort.optional.forEach(field => cursor[field] = tryGetValueForField(field, record));
+
+  const json = JSON.stringify(cursor);
+
+  return Buffer.from(json).toString('base64');
 };
 
-export const decodeCursor = (cursor: string, field: string, type: CURSOR_TYPES): string | Date => {
-  const decoded = Buffer.from(cursor, 'base64').toString('utf8');
+export const decodeCursor = (cursor: string, pagination: CursorPaginationParams): Cursor => {
+  const json = Buffer.from(cursor, 'base64').toString('utf8');
 
-  const [key, value] = decoded.split(':');
+  const parsed = JSON.parse(json);
 
-  if (key !== field) {
-    throw new Error('invalid cursor');
+  const decoded : Cursor = {};
+
+  pagination.sort.stable.forEach(field => decoded[field] = tryGetValueForField(field, parsed)); // TODO - validation?
+
+  pagination.sort.optional.forEach(field => decoded[field] = tryGetValueForField(field, parsed)); // TODO - validation?
+
+  return decoded;
+};
+
+const tryGetValueForField = (field: string, record: Record): string | Number | Date => {
+  if (typeof record[field] === 'undefined') {
+    throw new Error(`record does not have required field ${field}`);
   }
 
-  switch (type) {
-    case CURSOR_TYPES.STRING:
-      return value;
-    case CURSOR_TYPES.DATE:
-      return new Date(parseInt(value, 10));
-    default:
-      return value;
-  }
+  return record[field];
 };

@@ -4,7 +4,6 @@ export interface Product {
   color: string;
   material: string;
   price: number;
-  cursor: string;
 }
 
 export interface ProductRecord extends Product {

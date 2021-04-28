@@ -1,69 +1,64 @@
-import { CURSOR_TYPES, CursorPaginationParams, Cursors } from './types';
+import { CursorPaginationParams, Cursors } from './types';
 import { encodeCursor } from './encoding';
 
 
 export const calcCursors = (pagination: CursorPaginationParams, collection: object[], prevCollection: object[], total: number, lastCollection?: object[]): Cursors => {
-  const self = calcSelf(pagination, collection, prevCollection, pagination.field, total);
-  const last = lastCollection ? calcLast(pagination, collection, lastCollection, pagination.field, total) : null;
-  const next = calcNext(pagination, collection, pagination.field, total);
-  const prev = calcPrev(pagination, collection, prevCollection, pagination.field, total);
+  const self = calcSelf(pagination, collection, prevCollection, total);
+  const last = lastCollection ? calcLast(pagination, collection, lastCollection, total) : null;
+  const next = calcNext(pagination, collection, total);
+  const prev = calcPrev(pagination, collection, prevCollection, total);
 
   return { self, last, next, prev };
 };
 
-const calcSelf = (pagination: CursorPaginationParams, collection: unknown[], prevCollection: unknown[], field: string, total: number): string | null => {
-  if (total < collection.length) return null;
+const calcSelf = (pagination: CursorPaginationParams, collection: unknown[], prevCollection: unknown[], total: number): string | null => {
   if (!pagination.cursor) return null;
+  if (prevCollection.length < 1) return null;
+  if (total < collection.length) return null;
 
   const self = prevCollection[prevCollection.length - 1];
 
   if (!self) return null;
 
-  return tryGetCursor(self, field, pagination.type);
+  return tryGetCursor(pagination, self);
 };
 
-const calcNext = (pagination: CursorPaginationParams, collection: unknown[], field: string, total: number): string | null => {
-  if (total < collection.length) return null;
-
+const calcNext = (pagination: CursorPaginationParams, collection: unknown[], total: number): string | null => {
+  if (total <= collection.length) return null;
   if (total < pagination.limit) return null;
 
   const next = collection[collection.length - 1];
 
   if (!next) return null;
 
-  // TODO - handle on last
+  // TODO - handle on last, over fetch maybe?
 
-  return tryGetCursor(next, field, pagination.type);
+  return tryGetCursor(pagination, next);
 };
 
-const calcPrev = (pagination: CursorPaginationParams, collection: unknown[], prevCollection: unknown[], field: string, total: number): string | null => {
-  if (total <= collection.length) return null;
-  if (prevCollection.length < pagination.limit) return null;
+const calcPrev = (pagination: CursorPaginationParams, collection: unknown[], prevCollection: unknown[], total: number): string | null => {
+  if (!pagination.cursor) return null;
+
+  if (prevCollection.length < 1) return null;
 
   const prev = prevCollection[prevCollection.length - 1];
 
   if (!prev) return null;
 
-  return tryGetCursor(prev, field, pagination.type);
+  return tryGetCursor(pagination, prev);
 };
 
-const calcLast = (pagination: CursorPaginationParams, collection: unknown[], lastCollection: unknown[], field: string, total: number): string | null => {
+// TODO - Currently expects last set in reverse order
+const calcLast = (pagination: CursorPaginationParams, collection: unknown[], lastCollection: unknown[], total: number): string | null => {
   if (total <= collection.length) return null;
-  if (lastCollection.length < pagination.limit) return null;
 
-  const last = lastCollection[lastCollection.length - 1];
+  const last = lastCollection[0];
 
   if (!last) return null;
 
-  // TODO - handle on last
-
-  return tryGetCursor(last, field, pagination.type);
+  return tryGetCursor(pagination, last);
 };
 
-const tryGetCursor = (obj: any, field: string, type: CURSOR_TYPES): string => {
-  if (!obj[field]) {
-    throw new Error('cursor field not set on collection item');
-  }
-
-  return encodeCursor(field, obj[field], type);
+const tryGetCursor = (pagination: CursorPaginationParams, record: any): string => { // TODO - typing
+  return encodeCursor(pagination, record);
 };

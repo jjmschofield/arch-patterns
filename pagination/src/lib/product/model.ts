@@ -9,7 +9,6 @@ export class ProductModel extends Model {
   public color: string | undefined;
   public material: string | undefined;
   public price: number | undefined;
-  public cursor: string | undefined;
   public createdAt: Date | undefined;
   public updatedAt: Date | undefined;
 
@@ -20,7 +19,6 @@ export class ProductModel extends Model {
       color: this.color!,
       material: this.material!,
       price: this.price!,
-      cursor: this.cursor!,
       createdAt: this.createdAt!,
       updatedAt: this.updatedAt!,
     };
@@ -55,10 +53,8 @@ export const init = (sequelize: Sequelize) => {
         return value === null ? null : parseFloat(value);
       },
     },
-    cursor: {
-      type: DataTypes.BIGINT,
-      autoIncrement: true,
-      unique: true,
+    createdAt: {
+      type: DataTypes.DATE,
     },
     updatedAt: {
       type: DataTypes.DATE,
@@ -66,6 +62,7 @@ export const init = (sequelize: Sequelize) => {
   }, {
     sequelize,
     timestamps: true,
+    underscored: true,
     modelName: 'product',
   });
 };

@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { listProductsCursor } from '../lib/product';
-import { calcCursorLinks, CURSOR_TYPES, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
+import { calcCursorLinks, CursorPaginationParams, defaultCursorParams } from '../lib/pagination';
 import { tryGetInteger } from '../lib/numbers';
 import { badRequest, notImplemented } from '@hapi/boom';
 
@@ -19,29 +19,25 @@ export const cursorPaginationCtrl = async (ctx: Context) => {
     meta: {
       total: paginated.total,
     },
-    links: calcCursorLinks(paginated, `${ctx.protocol}://${ctx.host}${ctx.path}`),
+    links: calcCursorLinks(paginated, `${ctx.protocol}://${ctx.host}${ctx.path}`, ctx.query),
   };
 };
 
 const getPaginationParams = (ctx: Context): CursorPaginationParams => {
   const params = defaultCursorParams();
 
-  if (ctx.query.ordering) {
-    if (typeof ctx.query.ordering !== 'string') {
-      throw notImplemented('only single ordering keys are supported');
+  if (ctx.query.sort) {
+    if (typeof ctx.query.sort !== 'string') {
+      throw notImplemented('only single sort keys are supported');
     }
 
-    const allowedOrdering = ['cursor', 'createdAt', 'updatedAt'];
+    const allowedOrdering = ['name', 'price', 'id', 'color', 'material'];
 
-    if (!allowedOrdering.includes(ctx.query.ordering)) {
-      throw badRequest(`ordering must be one of ${allowedOrdering.join(', ')}`);
+    if (!allowedOrdering.includes(ctx.query.sort)) {
+      throw badRequest(`sort must be one of ${allowedOrdering.join(', ')}`);
     }
 
-    params.field = ctx.query.ordering;
-
-    if (params.field === 'createdAt' || params.field === 'updatedAt') {
-      params.type = CURSOR_TYPES.DATE;
-    }
+    params.sort.optional = [ctx.query.sort];
   }
 
   if (ctx.query.limit) {

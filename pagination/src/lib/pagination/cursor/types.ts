@@ -1,3 +1,7 @@
+export interface Cursor {
+  [key: string]: string | Number | Date;
+}
+
 export interface CursorPaginatedCollection<CollectionType> {
   collection: CollectionType[];
   params: CursorPaginationParams;
@@ -15,11 +19,20 @@ export interface Cursors {
 export interface CursorPaginationParams {
   cursor: string | null;
   type: CURSOR_TYPES;
-  field: string;
+  sort: {
+    stable: string[];
+    optional: string[];
+  };
+  order: SORT_ORDERS;
   limit: number;
 }
 
 export enum CURSOR_TYPES {
   STRING = 'STRING',
-  DATE ='DATE',
+  DATE = 'DATE',
+}
+
+export enum SORT_ORDERS {
+  ASC = 'ASC',
+  DESC = 'DESC',
 }
