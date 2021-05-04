@@ -30,7 +30,7 @@
     "koa-router": "^7.4.0",
     "module-alias": "^2.2.2",
     "needle": "^2.6.0",
-    "pg": "^8.5.1",
+    "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.5.1",
     "source-map-support": "^0.5.12",
