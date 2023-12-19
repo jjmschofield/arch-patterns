@@ -27,7 +27,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-cors": "0.0.16",
     "koa-helmet": "^4.1.0",
-    "koa-router": "^7.4.0",
+    "koa-router": "^11.0.2",
     "module-alias": "^2.2.2",
     "needle": "^2.6.0",
     "pg": "^8.5.1",
