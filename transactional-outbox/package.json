@@ -20,8 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/boom": "^7.4.3",
-    "axios": "^0.21.1",
-    "correlation-id": "^3.1.0",
+    "axios": "^1.6.8",
+    "correlation-id": "^4.0.0",
     "dotenv": "^8.2.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.3.0",
@@ -32,7 +32,7 @@
     "needle": "^2.6.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.5.1",
+    "sequelize": "^6.33.0",
     "source-map-support": "^0.5.12",
     "uuid": "^3.4.0"
   },
